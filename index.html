@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="./style.css" />
+		<link
+			rel="stylesheet"
+			href="./node_modules/bootstrap/dist/css/bootstrap.min.css"
+		/>
+		<link rel="stylesheet" href="./fonts.css" />
+		<script defer src="./script.js"></script>
+		<title>Pokedex</title>
+		<link rel="shortcut icon" href="./img/pokemon.jpg" type="image/x-icon" />
+	</head>
+	<body onload="init()">
+		<nav class="p-4">
+			<div class="nav-left-icons">
+				<img src="./img/pokemon.jpg" alt="" />
+				<span>Pokedex</span>
+			</div>
+			<div>
+				<input type="search" name="search" id="searchPokemon" />
+			</div>
+		</nav>
+		<main>
+			<section class="cards-container position-relative">
+				<div
+					class="container d-flex justify-content-center position-absolute z-3 start-0 end-0"
+				>
+					<div id="spinner" class="justify-content-center mt-5">
+						<div
+							class="spinner-border text-warning"
+							style="width: 10rem; height: 10rem"
+							role="status"
+						>
+							<span class="visually-hidden">Loading...</span>
+						</div>
+					</div>
+				</div>
+				<div
+					id="pokemonList"
+					class="m-5 d-flex flex-wrap gap-5 justify-content-center position-relative"
+				></div>
+			</section>
+		</main>
+		<footer class="p-4">
+			<span>Created by: Raudel Gómez Smith</span>
+			<span>©️ 2024</span>
+		</footer>
+	</body>
+</html>

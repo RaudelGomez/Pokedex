@@ -1,0 +1,119 @@
+html {
+	scroll-behavior: smooth;
+	--main-color: #082129;
+	--secondary-color: #05171e;
+	--font-color: rgb(194, 185, 185);
+}
+
+body {
+	margin: 0;
+	box-sizing: border-box;
+	font-family: "Roboto" !important;
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+	color: var(--font-color) !important;
+}
+
+nav {
+	display: flex;
+	justify-content: space-between;
+	padding: 16px;
+	background-color: var(--main-color);
+}
+
+.nav-left-icons {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+nav img {
+	width: 2rem;
+	transition: all 0.8s ease-in-out;
+	cursor: pointer;
+}
+
+nav img:hover {
+	transform: scale(1.2) rotate(360deg);
+}
+
+main {
+	flex: 1 !important;
+	width: 100%;
+	background-color: var(--secondary-color);
+}
+
+.pokemonId-card {
+	left: 8px;
+}
+
+.img-pokemon {
+	/* width: 10rem; */
+	height: 12rem;
+	object-fit: contain;
+	object-position: bottom;
+	margin: auto;
+	position: relative;
+	transition: all 225ms ease-in-out;
+	cursor: pointer;
+}
+
+.first-letter-uppercase {
+	display: block;
+}
+
+.first-letter-uppercase::first-letter {
+	text-transform: uppercase;
+}
+
+.img-pokemon:hover {
+	transform: scale(1.2) translateY(-10px);
+}
+
+.cards-container h5 {
+	background-color: var(--main-color);
+	color: var(--font-color);
+	font-weight: 500;
+}
+
+.cards-container .card {
+	/* border-color: unset; */
+	overflow: hidden;
+	padding: auto;
+}
+
+.container-img-card {
+	display: flex;
+	justify-content: center;
+	background-image: url("./img/pokemon.jpg");
+	background-size: 8rem;
+	background-repeat: no-repeat;
+	background-position: bottom right;
+	width: 10rem;
+	height: 12rem;
+	position: absolute;
+	bottom: 4rem;
+	right: -1.5rem;
+	opacity: 0.3;
+}
+
+.pokemon-ability {
+	position: relative;
+	background: var(--main-color);
+	color: var(--font-color) !important;
+}
+
+.ability {
+	width: 2rem;
+	aspect-ratio: 1/1;
+	object-fit: cover;
+	object-position: center;
+}
+footer {
+	background-color: var(--main-color);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
