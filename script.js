@@ -1,7 +1,27 @@
 const BASE_URL = "https://pokeapi.co/api/v2/pokemon";
 let loadPokemonFrom = 0;
 let pokemonsAPI;
-const typeColors = {
+const typeColors = [
+	{ name: "water", color: "#3399FF", img: "./img/water.png" },
+	{ name: "fire", color: "#FF4422", img: "./img/fire.png" },
+	{ name: "grass", color: "#77CC55", img: "./img/grass.png" },
+	{ name: "electric", color: "#FFCC33", img: "./img/electric.png" },
+	{ name: "normal", color: "#AAAA99", img: "./img/normal.png" },
+	{ name: "poison", color: "#AA5599", img: "./img/poison.png" },
+	{ name: "ground", color: "#DD7744", img: "./img/ground.png" },
+	{ name: "rock", color: "#BBAA66", img: "./img/rock.png" },
+	{ name: "bug", color: "#AABB22", img: "./img/bug.png" },
+	{ name: "ghost", color: "#6666BB", img: "./img/ghost.png" },
+	{ name: "steel", color: "#AAAABB", img: "./img/steel.png" },
+	{ name: "fairy", color: "#EE99AC", img: "./img/fairy.png" },
+	{ name: "fighting", color: "#BB5544", img: "./img/fighting.png" },
+	{ name: "psychic", color: "#FF5599", img: "./img/psychic.png" },
+	{ name: "ice", color: "#66CCFF", img: "./img/ice.png" },
+	{ name: "dragon", color: "#7766EE", img: "./img/dragon.png" },
+	{ name: "dark", color: "#775544", img: "./img/dark.png" },
+	{ name: "flying", color: "#8899FF", img: "./img/flying.png" },
+];
+const typeColor2 = {
 	water: "#3399FF",
 	fire: "#FF4422",
 	grass: "#77CC55",
@@ -50,16 +70,16 @@ async function loadingPokemons() {
 	for (let i = 0; i < pokemonsAPI.results.length; i++) {
 		const pokemon = pokemonsAPI.results[i];
 		let pokemonData = await getPokemonData(pokemon.url);
-		let getPokemonColor = pokemonColor(pokemonData);
-		LoadingOnePokemon(pokemonData, getPokemonColor);
+		let getPokemonColorPhoto = pokemonColor(pokemonData);
+		LoadingOnePokemon(pokemonData, getPokemonColorPhoto);
+		renderTypesPokemon(pokemonData.id, getPokemonColorPhoto);
 	}
 }
 
-function LoadingOnePokemon(pokemonData, getPokemonColor) {
-	console.log(pokemonData);
+function LoadingOnePokemon(pokemonData, getPokemonColorPhoto) {
 	const pokemonList = document.getElementById("pokemonList");
 	pokemonList.innerHTML += /*html*/ `
-    <div class="card" style="width: 15rem; background-color: ${getPokemonColor}">
+    <div class="card" style="width: 15rem; background-color: ${getPokemonColorPhoto[0]["color"]}">
       <h5 class="card-title p-2 text-center position-relative">
         <span class="pokemonId-card position-absolute">#${pokemonData.id}</span>
         <span class="first-letter-uppercase">${pokemonData.name}</span>
@@ -70,12 +90,9 @@ function LoadingOnePokemon(pokemonData, getPokemonColor) {
         class="card-img-top img-pokemon"
         alt="${pokemonData.name}"
       />
-      <div
+      <div id="types-pokemon${pokemonData.id}"
         class="pokemon-ability card-body d-flex justify-content-center align-items-center gap-3"
-      >
-        <img class="ability" src="./img/grass.png" alt="">
-        <img class="ability" src="./img/poison.png" alt="">
-      </div>
+      ></div>
     </div>
   `;
 }
@@ -87,9 +104,46 @@ async function getPokemonData(url) {
 }
 
 function pokemonColor(pokemonData) {
-	let getPokemonType = pokemonData.types[0].type.name;
-	let color = typeColors[getPokemonType] || "#AAAA99";
-	return color;
+	//onsole.log(pokemonData.types);
+	let getPokemonType = [];
+	let pokemonColorPhoto = [];
+	for (let i = 0; i < pokemonData.types.length; i++) {
+		const type = pokemonData.types[i].type.name;
+		getPokemonType.push(type);
+	}
+	//console.log(getPokemonType);
+	for (let j = 0; j < getPokemonType.length; j++) {
+		const typeElement = getPokemonType[j];
+		let t = typeColors.findIndex((type) => type.name == typeElement);
+		pokemonColorPhoto.push(typeColors[t]);
+	}
+	return pokemonColorPhoto;
+	// let color = typeColors[getPokemonType] || "#AAAA99";
+	// return color;
+}
+
+function renderTypesPokemon(idContainer, getPokemonColorPhoto) {
+	console.log(getPokemonColorPhoto);
+	const typesPokemonContainer = document.getElementById(
+		`types-pokemon${idContainer}`
+	);
+	for (let index = 0; index < getPokemonColorPhoto.length; index++) {
+		const type = getPokemonColorPhoto[index];
+		console.log(type);
+		typesPokemonContainer.innerHTML += /*html*/ `
+    <figure class="d-flex justify-content-center flex-column align-items-center mb-0">
+      <img class="type-pokemon-img" src="${type.img}" alt="${type.name}">  
+      <figcaption>
+        ${type.name}
+      </figcaption>
+    </figure>
+      
+    `;
+	}
+	// typesPokemonContainer.innerHTML += /*html*/ `
+	//   <img class="ability" src="${getPokemonColorPhoto.img}" alt="">
+	//   <img class="ability" src="./img/poison.png" alt="">
+	// `;
 }
 
 /* let promiseError = false;
