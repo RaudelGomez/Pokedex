@@ -68,7 +68,7 @@ main {
 }
 
 .img-pokemon:hover {
-	transform: scale(1.2) translateY(-10px);
+	transform: scale(1.1) translateY(-8px);
 }
 
 .cards-container h5 {
@@ -78,7 +78,6 @@ main {
 }
 
 .cards-container .card {
-	/* border-color: unset; */
 	overflow: hidden;
 	padding: auto;
 }
@@ -98,10 +97,14 @@ main {
 	opacity: 0.3;
 }
 
-.pokemon-ability {
+.pokemon-types {
 	position: relative;
 	background: var(--main-color);
 	color: var(--font-color) !important;
+}
+
+.d-block {
+	display: block !important;
 }
 
 .type-pokemon-img {

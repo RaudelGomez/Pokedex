@@ -21,26 +21,6 @@ const typeColors = [
 	{ name: "dark", color: "#775544", img: "./img/dark.png" },
 	{ name: "flying", color: "#8899FF", img: "./img/flying.png" },
 ];
-const typeColor2 = {
-	water: "#3399FF",
-	fire: "#FF4422",
-	grass: "#77CC55",
-	electric: "#FFCC33",
-	normal: "#AAAA99",
-	poison: "#AA5599",
-	ground: "#DD7744",
-	rock: "#BBAA66",
-	bug: "#AABB22",
-	ghost: "#6666BB",
-	steel: "#AAAABB",
-	fairy: "#EE99AC",
-	fighting: "#BB5544",
-	psychic: "#FF5599",
-	ice: "#66CCFF",
-	dragon: "#7766EE",
-	dark: "#775544",
-	flying: "#8899FF",
-};
 
 async function init() {
 	await callingPokemon();
@@ -76,26 +56,26 @@ async function loadingPokemons() {
 		let pokemonData = await getPokemonData(pokemon.url);
 		let getPokemonColorPhoto = pokemonColor(pokemonData);
 		LoadingOnePokemon(pokemonData, getPokemonColorPhoto);
-		renderTypesPokemon(pokemonData.id, getPokemonColorPhoto);
+		renderTypesPokemon(pokemonData.id, getPokemonColorPhoto, pokemonData);
 	}
 }
 
 function LoadingOnePokemon(pokemonData, getPokemonColorPhoto) {
 	const pokemonList = document.getElementById("pokemonList");
 	pokemonList.innerHTML += /*html*/ `
-    <div class="card" style="width: 15rem; background-color: ${getPokemonColorPhoto[0]["color"]}">
+    <div id="card${pokemonData.id}" class="card" style="width: 15rem; background-color: ${getPokemonColorPhoto[0]["color"]}">
       <h5 class="card-title p-2 text-center position-relative">
         <span class="pokemonId-card position-absolute">#${pokemonData.id}</span>
         <span class="first-letter-uppercase">${pokemonData.name}</span>
       </h5>
       <div class="container-img-card"></div>
       <img
-        src="${pokemonData.sprites.front_default}"
+        src="${pokemonData.sprites.other.dream_world.front_default}"
         class="card-img-top img-pokemon"
         alt="${pokemonData.name}"
       />
       <div id="types-pokemon${pokemonData.id}"
-        class="pokemon-ability card-body d-flex justify-content-center align-items-center gap-3"
+        class="pokemon-types card-body d-flex justify-content-center align-items-center gap-3"
       ></div>
     </div>
   `;
@@ -108,14 +88,12 @@ async function getPokemonData(url) {
 }
 
 function pokemonColor(pokemonData) {
-	//onsole.log(pokemonData.types);
 	let getPokemonType = [];
 	let pokemonColorPhoto = [];
 	for (let i = 0; i < pokemonData.types.length; i++) {
 		const type = pokemonData.types[i].type.name;
 		getPokemonType.push(type);
 	}
-	//console.log(getPokemonType);
 	for (let j = 0; j < getPokemonType.length; j++) {
 		const typeElement = getPokemonType[j];
 		let t = typeColors.findIndex((type) => type.name == typeElement);
@@ -124,22 +102,29 @@ function pokemonColor(pokemonData) {
 	return pokemonColorPhoto;
 }
 
-function renderTypesPokemon(idContainer, getPokemonColorPhoto) {
-	console.log(getPokemonColorPhoto);
+function renderTypesPokemon(idContainer, getPokemonColorPhoto, pokemonData) {
 	const typesPokemonContainer = document.getElementById(
 		`types-pokemon${idContainer}`
 	);
-	for (let index = 0; index < getPokemonColorPhoto.length; index++) {
-		const type = getPokemonColorPhoto[index];
-		console.log(type);
+	for (let i = 0; i < getPokemonColorPhoto.length; i++) {
+		const type = getPokemonColorPhoto[i];
 		typesPokemonContainer.innerHTML += /*html*/ `
-    <figure class="d-flex justify-content-center flex-column align-items-center mb-0">
-      <img class="type-pokemon-img" src="${type.img}" alt="${type.name}">  
+    <figure class="d-flex justify-content-center flex-column align-items-center mb-0 position-relative" onclick="changeBGColor('${type.color}', ${pokemonData.id})">
+    <p id="helpColor${pokemonData.id}${i}" class="d-none position-absolute">Click here <br> to change color</p>
+      <img class="type-pokemon-img" src="${type.img}" alt="${type.name}" onmouseover="displayBlock('${pokemonData.id}', '${i}')">  
       <figcaption>
         ${type.name}
       </figcaption>
     </figure>
-      
     `;
 	}
+}
+
+function changeBGColor(color, id) {
+	document.getElementById(`card${id}`).style.backgroundColor = `${color}`;
+}
+
+function displayBlock(id, i) {
+	console.log(id);
+	/* document.getElementById(`helpColor${id}${i}`).classList.remove("d-none"); */
 }
