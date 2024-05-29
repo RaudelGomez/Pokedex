@@ -1,13 +1,21 @@
 function LoadingOnePokemonHTML(pokemonData, getPokemonColorPhoto) {
 	return /*html*/ `
-    <div id="card${pokemonData.id}" class="card" style="width: 15rem; background-color: ${getPokemonColorPhoto[0]["color"]}">
+    <div id="card${
+			pokemonData.id
+		}" class="card" style="width: 15rem; background-color: ${
+		getPokemonColorPhoto[0]["color"]
+	}">
       <h5 class="card-title p-2 text-center position-relative">
         <span class="pokemonId-card position-absolute">#${pokemonData.id}</span>
         <span class="first-letter-uppercase">${pokemonData.name}</span>
       </h5>
       <div class="container-img-card"></div>
       <img
-        src="${pokemonData.sprites.other.dream_world.front_default}"
+        src="${
+					pokemonData.sprites.other.dream_world.front_default
+						? pokemonData.sprites.other.dream_world.front_default
+						: pokemonData.sprites.other.home.front_default
+				}"
         class="card-img-top img-pokemon"
         alt="${pokemonData.name}"
       />

@@ -1,5 +1,8 @@
 const BASE_URL = "https://pokeapi.co/api/v2/pokemon";
 let loadPokemonFrom = 0;
+let quantityPokemons = 20;
+let firstNumberPagination = 1;
+let currentPage = 1;
 let pokemonsAPI;
 const typeColors = [
 	{ name: "water", color: "#3399FF", img: "./img/water.png" },
@@ -23,11 +26,12 @@ const typeColors = [
 ];
 
 async function init() {
-	await callingPokemon();
+	await getAllPokemons();
 	loadingPokemons();
+	getPagination();
 }
 
-async function callingPokemon() {
+async function getAllPokemons() {
 	const spinnerContainer = document.getElementById("spinnerContainer");
 	const spinner = document.getElementById("pokemon-ball-spinner");
 	try {
@@ -35,7 +39,7 @@ async function callingPokemon() {
 		spinnerContainer.style.display = "flex";
 		spinner.classList.add("spinner-animation");
 		let response = await fetch(
-			`${BASE_URL}?limit=20&offset=${loadPokemonFrom}.`
+			`${BASE_URL}?limit=${quantityPokemons}&offset=${loadPokemonFrom}.`
 		);
 		pokemonsAPI = await response.json();
 		//Hidden spinner
@@ -50,6 +54,7 @@ async function callingPokemon() {
 }
 
 async function loadingPokemons() {
+	document.getElementById("pokemonList").innerHTML = "";
 	for (let i = 0; i < pokemonsAPI.results.length; i++) {
 		const pokemon = pokemonsAPI.results[i];
 		let pokemonData = await getPokemonData(pokemon.url);
@@ -110,5 +115,79 @@ function displayNone(id, i) {
 function displayBlock(id, i, numberTypes) {
 	if (numberTypes >= 2) {
 		document.getElementById(`helpColor${id}${i}`).classList.remove("d-none");
+	}
+}
+
+function nextPokemons(e) {
+	e.preventDefault();
+}
+
+/*Pagination */
+function getPagination() {
+	getPaginationHTML();
+	paintingActiveButtonPagination();
+	activateDisableButtonPagination();
+}
+
+function getPaginationHTML() {
+	let paginationContainer = document.getElementById("paginationContainer");
+	paginationContainer.innerHTML = "";
+	paginationContainer.innerHTML += /*html*/ `
+    <ul id="pagination" class="pagination">
+      <li id="link-previous-pokemon" class="page-item">
+        <a  class="page-link link-load-pokemons" onclick="beforePokemons(loadPokemonFrom)">Previous</a>
+      </li>
+      <li class="page-item"><a class="page-link" href="#" onclick="showCurrentPokemons('${firstNumberPagination}')">${firstNumberPagination} </a></li>
+      <li class="page-item" aria-current="page">
+        <a class="page-link" href="#" onclick="showCurrentPokemons('${
+					firstNumberPagination + 1
+				}')">${firstNumberPagination + 1}</a>
+      </li>
+      <li class="page-item"><a class="page-link" href="#" onclick="showCurrentPokemons('${
+				firstNumberPagination + 2
+			}')">${firstNumberPagination + 2}</a></li>
+      <li class="page-item">
+        <a class="page-link" href="#" onclick="nextPokemons(loadPokemonFrom)">Next</a>
+      </li>
+    </ul>
+  `;
+}
+
+function paintingActiveButtonPagination() {
+	let pagination = document.getElementById("pagination");
+	let liItems = pagination.querySelectorAll("li");
+	for (const li of liItems) {
+		if (+li.firstElementChild.innerHTML == currentPage) {
+			li.firstElementChild.classList.add("active");
+		}
+	}
+}
+
+function nextPokemons(loadingSomePokemons) {
+	loadPokemonFrom = loadingSomePokemons + quantityPokemons;
+	firstNumberPagination = firstNumberPagination + 3;
+	currentPage++;
+	init();
+}
+
+/**Here lookin */
+function beforePokemons(loadingSomePokemons) {
+	/* loadPokemonFrom = loadingSomePokemons + quantityPokemons;
+	firstNumberPagination = firstNumberPagination - 3;
+	currentPage--;
+	init(); */
+}
+
+function showCurrentPokemons(currentNumber) {
+	loadPokemonFrom = currentNumber * quantityPokemons - quantityPokemons;
+	console.log(currentNumber);
+	/**Arreglar el current number aqui */
+	currentPage = currentNumber;
+	init();
+}
+
+function activateDisableButtonPagination() {
+	if (currentPage == 1) {
+		document.getElementById("link-previous-pokemon").classList.add("disabled");
 	}
 }

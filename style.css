@@ -15,7 +15,7 @@ body {
 	color: var(--font-color) !important;
 }
 
-nav {
+nav.navegation {
 	display: flex;
 	justify-content: space-between;
 	padding: 16px;
@@ -28,13 +28,13 @@ nav {
 	gap: 8px;
 }
 
-nav img {
+nav.navegation img {
 	width: 2rem;
 	transition: all 0.8s ease-in-out;
 	cursor: pointer;
 }
 
-nav img:hover {
+nav.navegation img:hover {
 	transform: scale(1.2) rotate(360deg);
 }
 
@@ -175,9 +175,18 @@ main {
 }
 
 .spinner-animation {
-	animation: spin 1s linear infinite 2s;
+	animation: spin 1s linear infinite;
 	width: 60%;
 	aspect-ratio: 1/1;
+}
+
+.pagination-container {
+	background-color: var(--main-color);
+	border: 3px solid var(--secondary-color);
+}
+
+nav ul.pagination {
+	margin-top: revert;
 }
 
 footer {
@@ -186,6 +195,11 @@ footer {
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
+}
+
+/*Pagination*/
+.link-load-pokemons {
+	cursor: pointer;
 }
 
 @media (max-width: 380px) {

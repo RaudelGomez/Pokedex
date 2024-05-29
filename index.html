@@ -9,13 +9,13 @@
 			href="./node_modules/bootstrap/dist/css/bootstrap.min.css"
 		/>
 		<link rel="stylesheet" href="./fonts.css" />
-		<script src="./templates.js"></script>
 		<script defer src="./script.js"></script>
+		<script defer src="./templates.js"></script>
 		<title>Pokedex</title>
 		<link rel="shortcut icon" href="./img/pokemon.jpg" type="image/x-icon" />
 	</head>
 	<body onload="init()">
-		<nav class="p-4">
+		<nav class="p-4 navegation">
 			<div class="nav-left-icons">
 				<img src="./img/pokemon.jpg" alt="" />
 				<span>Pokedex</span>
@@ -43,6 +43,11 @@
 				></div>
 			</section>
 		</main>
+		<nav
+			id="paginationContainer"
+			aria-label="pagination"
+			class="d-flex justify-content-center align-items-center pagination-container"
+		></nav>
 		<footer class="p-4">
 			<span>Created by: Raudel Gómez Smith</span>
 			<span>©️ 2024</span>
