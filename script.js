@@ -1,6 +1,6 @@
 const BASE_URL = "https://pokeapi.co/api/v2/pokemon";
 let loadPokemonFrom = 0;
-let quantityPokemons = 20;
+let quantityPokemons = 3;
 let firstNumberPagination = 1;
 let currentPage = 1;
 let pokemonsAPI;
@@ -137,7 +137,7 @@ function getPaginationHTML() {
       <li id="link-previous-pokemon" class="page-item">
         <a  class="page-link link-load-pokemons" onclick="beforePokemons(loadPokemonFrom)">Previous</a>
       </li>
-      <li class="page-item"><a class="page-link" href="#" onclick="showCurrentPokemons('${firstNumberPagination}')">${firstNumberPagination} </a></li>
+      <li class="page-item" id="first-link"><a class="page-link" href="#" onclick="showCurrentPokemons('${firstNumberPagination}')">${firstNumberPagination} </a></li>
       <li class="page-item" aria-current="page">
         <a class="page-link" href="#" onclick="showCurrentPokemons('${
 					firstNumberPagination + 1
@@ -165,8 +165,8 @@ function paintingActiveButtonPagination() {
 
 function nextPokemons(loadingSomePokemons) {
 	loadPokemonFrom = loadingSomePokemons + quantityPokemons;
-	firstNumberPagination = firstNumberPagination + 3;
-	currentPage++;
+	firstNumberPagination = firstNumberPagination + 1;
+	currentPage = firstNumberPagination;
 	init();
 }
 
@@ -180,8 +180,6 @@ function beforePokemons(loadingSomePokemons) {
 
 function showCurrentPokemons(currentNumber) {
 	loadPokemonFrom = currentNumber * quantityPokemons - quantityPokemons;
-	console.log(currentNumber);
-	/**Arreglar el current number aqui */
 	currentPage = currentNumber;
 	init();
 }
