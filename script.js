@@ -1,5 +1,5 @@
 const BASE_URL = "https://pokeapi.co/api/v2/pokemon";
-let loadPokemonFrom = 1;
+let loadPokemonFrom = 0;
 let pokemonsAPI;
 const typeColors = {
 	water: "#3399FF",
