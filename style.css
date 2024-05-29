@@ -92,9 +92,11 @@ main {
 	width: 10rem;
 	height: 12rem;
 	position: absolute;
-	bottom: 4rem;
-	right: -1.5rem;
-	opacity: 0.3;
+	/* bottom: 4rem; */
+	right: -1.2rem;
+	/* right: -1.5rem; */
+	/* opacity: 0.3; */
+	opacity: 0.2;
 }
 
 .pokemon-types {
