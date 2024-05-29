@@ -166,6 +166,8 @@ function paintingActiveButtonPagination() {
 function nextPokemons(loadingSomePokemons) {
 	loadPokemonFrom = loadingSomePokemons + quantityPokemons;
 	firstNumberPagination = firstNumberPagination + 1;
+	console.log(currentPage);
+	console.log(firstNumberPagination);
 	currentPage = firstNumberPagination;
 	init();
 }
@@ -179,9 +181,19 @@ function beforePokemons(loadingSomePokemons) {
 }
 
 function showCurrentPokemons(currentNumber) {
-	loadPokemonFrom = currentNumber * quantityPokemons - quantityPokemons;
-	currentPage = currentNumber;
-	init();
+	loadPokemonFrom = currentNumber;
+	console.log(loadPokemonFrom);
+	// loadPokemonFrom = firstNumberPagination * quantityPokemons - quantityPokemons;
+	//console.log(loadPokemonFrom);
+	// currentPage = loadPokemonFrom;
+	// console.log(currentPage);
+	// console.log(firstNumberPagination);
+	let rest = currentPage % 3;
+	/* if (rest == 0) {
+		currentPage = firstNumberPagination;
+	}  */
+	// console.log(rest);
+	// init();
 }
 
 function activateDisableButtonPagination() {
