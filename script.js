@@ -25,7 +25,6 @@ const typeColors = [
 async function init() {
 	await callingPokemon();
 	loadingPokemons();
-	console.log(pokemonsAPI);
 }
 
 async function callingPokemon() {
@@ -36,7 +35,7 @@ async function callingPokemon() {
 		spinnerContainer.style.display = "flex";
 		spinner.classList.add("spinner-animation");
 		let response = await fetch(
-			`${BASE_URL}?limit=12&offset=${loadPokemonFrom}.`
+			`${BASE_URL}?limit=20&offset=${loadPokemonFrom}.`
 		);
 		pokemonsAPI = await response.json();
 		//Hidden spinner
@@ -109,9 +108,10 @@ function renderTypesPokemon(idContainer, getPokemonColorPhoto, pokemonData) {
 	for (let i = 0; i < getPokemonColorPhoto.length; i++) {
 		const type = getPokemonColorPhoto[i];
 		typesPokemonContainer.innerHTML += /*html*/ `
-    <figure class="d-flex justify-content-center flex-column align-items-center mb-0 position-relative" onclick="changeBGColor('${type.color}', ${pokemonData.id})">
-    <p id="helpColor${pokemonData.id}${i}" class="d-none position-absolute">Click here <br> to change color</p>
-      <img class="type-pokemon-img" src="${type.img}" alt="${type.name}" onmouseover="displayBlock('${pokemonData.id}', '${i}')">  
+    <figure class="d-flex justify-content-center flex-column align-items-center mb-0" onclick="changeBGColor('${type.color}', ${pokemonData.id})">
+      <p id="helpColor${pokemonData.id}${i}" class="d-none position-absolute help-color text-center rounded-1 p-1">Click here<br>to change color</p>
+      <img class="type-pokemon-img" src="${type.img}" alt="${type.name}" 
+      onmouseover="displayBlock('${pokemonData.id}', '${i}', '${pokemonData.types.length}')" onmouseout="displayNone('${pokemonData.id}', '${i}')">  
       <figcaption>
         ${type.name}
       </figcaption>
@@ -124,7 +124,12 @@ function changeBGColor(color, id) {
 	document.getElementById(`card${id}`).style.backgroundColor = `${color}`;
 }
 
-function displayBlock(id, i) {
-	console.log(id);
-	/* document.getElementById(`helpColor${id}${i}`).classList.remove("d-none"); */
+function displayNone(id, i) {
+	document.getElementById(`helpColor${id}${i}`).classList.add("d-none");
+}
+
+function displayBlock(id, i, numberTypes) {
+	if (numberTypes >= 2) {
+		document.getElementById(`helpColor${id}${i}`).classList.remove("d-none");
+	}
 }

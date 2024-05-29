@@ -103,8 +103,33 @@ main {
 	color: var(--font-color) !important;
 }
 
-.d-block {
-	display: block !important;
+.help-color {
+	bottom: 60px;
+	background-color: rgba(255 255 255/90%);
+	color: var(--main-color);
+	bottom: 65px !important;
+	font-size: 12px;
+	font-weight: 700;
+	animation: showingTextOpacity 125ms ease-out;
+	animation: showingTextScale 225ms ease-out;
+}
+
+@keyframes showingTextOpacity {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes showingTextScale {
+	from {
+		transform: scale(0);
+	}
+	to {
+		transform: scale(1);
+	}
 }
 
 .type-pokemon-img {
@@ -113,7 +138,7 @@ main {
 	object-fit: cover;
 	object-position: center;
 	cursor: pointer;
-	animation: rotationTypesLoading 0.6s ease-out forwards;
+	/* animation: rotationTypesLoading 0.6s ease-out forwards; */
 }
 
 .type-pokemon-img:hover {
@@ -134,7 +159,7 @@ main {
 		transform: scale(1) rotateY(0);
 	}
 	to {
-		transform: scale(1.2) rotateY(720deg);
+		transform: scale(1.2) rotateY(360deg);
 	}
 }
 
