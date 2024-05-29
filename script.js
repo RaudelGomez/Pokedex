@@ -49,20 +49,24 @@ async function init() {
 }
 
 async function callingPokemon() {
-	const spinner = document.getElementById("spinner");
+	const spinnerContainer = document.getElementById("spinnerContainer");
+	const spinner = document.getElementById("pokemon-ball-spinner");
 	try {
 		//Show spinner
-		spinner.style.display = "flex";
+		spinnerContainer.style.display = "flex";
+		spinner.classList.add("spinner-animation");
 		let response = await fetch(
 			`${BASE_URL}?limit=12&offset=${loadPokemonFrom}.`
 		);
 		pokemonsAPI = await response.json();
 		//Hidden spinner
-		spinner.style.display = "none";
+		spinnerContainer.style.display = "none";
+		spinner.classList.remove("spinner-animation");
 	} catch (error) {
 		console.log(error);
 		//Hidden spinner
-		spinner.style.display = "none";
+		spinnerContainer.style.display = "none";
+		spinner.classList.remove("spinner-animation");
 	}
 }
 
@@ -118,8 +122,6 @@ function pokemonColor(pokemonData) {
 		pokemonColorPhoto.push(typeColors[t]);
 	}
 	return pokemonColorPhoto;
-	// let color = typeColors[getPokemonType] || "#AAAA99";
-	// return color;
 }
 
 function renderTypesPokemon(idContainer, getPokemonColorPhoto) {
@@ -140,22 +142,4 @@ function renderTypesPokemon(idContainer, getPokemonColorPhoto) {
       
     `;
 	}
-	// typesPokemonContainer.innerHTML += /*html*/ `
-	//   <img class="ability" src="${getPokemonColorPhoto.img}" alt="">
-	//   <img class="ability" src="./img/poison.png" alt="">
-	// `;
 }
-
-/* let promiseError = false;
-https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/3.png
-function getPromise() {
-	return new Promise((resolve, reject) => {
-		setTimeout(() => {
-			if (promiseError) {
-				reject("hat nicht geklappt1");
-			} else {
-				resolve("hat geklappt1");
-			}
-		}, 2000);
-	});
-} */
