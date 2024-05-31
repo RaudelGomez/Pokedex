@@ -1,10 +1,10 @@
 const BASE_URL = "https://pokeapi.co/api/v2/pokemon";
 let loadPokemonFrom = 0;
-let quantityPokemons = 4;
-let showingNumberOfPage = 5;
-let currentPage = 1;
-let firstNumberPagination = 1;
+let quantityPokemons = 3;
 let pokemonsAPI;
+let allPokemonsAPI;
+let namePokemons = [];
+let colorImgOpen = "";
 const typeColors = [
 	{ name: "water", color: "#3399FF", img: "./img/water.png" },
 	{ name: "fire", color: "#FF4422", img: "./img/fire.png" },
@@ -26,10 +26,15 @@ const typeColors = [
 	{ name: "flying", color: "#8899FF", img: "./img/flying.png" },
 ];
 
+let showingNumberOfPage = 0;
+let currentPage = 1;
+let firstNumberPagination = 1;
+
 async function init() {
-	await getAllPokemons();
-	loadingPokemons();
+	await getAllPokemons(loadPokemonFrom, quantityPokemons);
+	await loadingPokemons();
 	getPagination();
+	await savingNamePokemonArray();
 }
 
 async function getAllPokemons() {
@@ -119,15 +124,77 @@ function displayBlock(id, i, numberTypes) {
 	}
 }
 
-function nextPokemons(e) {
-	e.preventDefault();
+async function savingNamePokemonArray() {
+	try {
+		let response = await fetch(`${BASE_URL}?limit=900&offset=0.`);
+		allPokemonsAPI = await response.json();
+		for (let i = 0; i < allPokemonsAPI.results.length; i++) {
+			const pokemonName = allPokemonsAPI.results[i];
+			namePokemons.push({ name: pokemonName.name, url: pokemonName.url });
+		}
+	} catch (error) {
+		console.log(error);
+	}
+}
+
+function searchingNamePokemon() {
+	let namesFound = [];
+	let namePoke = document.getElementById("searchPokemon").value;
+	if (namePoke.length >= 3) {
+		namesFound = namePokemons.filter((name) => name.name.includes(namePoke));
+		if (namesFound.length >= 1) {
+			loadingPokemonsSearched(namesFound);
+		}
+	} else {
+		loadingPokemons();
+	}
+}
+
+async function loadingPokemonsSearched(resultsPokemons) {
+	document.getElementById("pokemonList").innerHTML = "";
+	// console.log(resultsPokemons);
+	// console.log(allPokemonsAPI.results);
+	for (let i = 0; i < resultsPokemons.length; i++) {
+		const pokemon = resultsPokemons[i];
+		let pokemonData = await getPokemonData(pokemon.url);
+		let getPokemonColorPhoto = pokemonColor(pokemonData);
+		LoadingOnePokemon(pokemonData, getPokemonColorPhoto);
+		renderTypesPokemon(pokemonData.id, getPokemonColorPhoto, pokemonData);
+	}
+}
+
+async function openImg(idPokemon) {
+	savingCurrentColor(idPokemon);
+	try {
+		let response = await fetch(`${BASE_URL}/${idPokemon}`);
+		thePokemon = await response.json();
+		console.log(thePokemon);
+	} catch (error) {
+		console.log(error);
+	}
+	let imgPopContainer = document.getElementById("img-pop-container");
+	imgPopContainer.classList.add("img-pop-container");
+	imgPopContainer.innerHTML = /*html*/ `${openImgHTML(thePokemon)}`;
+}
+
+function savingCurrentColor(idPokemon) {
+	let pokemonList = document.getElementById("pokemonList");
+	let containersCards = pokemonList.querySelectorAll(".card");
+	for (const card of containersCards) {
+		if (card.id == `card${idPokemon}`) {
+			let computedStyle = getComputedStyle(card);
+			let backgroundColor = computedStyle.backgroundColor;
+			colorImgOpen = backgroundColor;
+		}
+	}
 }
 
 /*Pagination */
 function getPagination() {
 	getPaginationHTML();
 	paintingActiveButtonPagination();
-	activateDisableButtonPagination();
+	activateDisableButtonBeforePagination();
+	activateDisableButtonNextPagination();
 }
 
 function getPaginationHTML() {
@@ -135,52 +202,46 @@ function getPaginationHTML() {
 	paginationContainer.innerHTML = "";
 
 	paginationContainer.innerHTML += /*html*/ `
-      <ul id="pagination" class="pagination">
-          <li id="link-previous-pokemon" class="page-item ${
-						currentPage === 1 ? "disabled" : ""
-					}">
-              <a class="page-link link-load-pokemons" href="#" onclick="beforePokemons(event)">Previous</a>
-          </li>
-          <ul id="pagination-buttons-container" class="pagination">
-              ${pagePaginationHTML()}
-          </ul>
-          <li id="link-next-pokemon" class="page-item ${
-						pokemonsAPI.next === null ? "disabled" : ""
-					}">
-              <a class="page-link" href="#" onclick="nextPokemons(event)">Next</a>
-          </li>
+    <ul id="pagination" class="pagination">
+      <li id="link-previous-pokemon" class="page-item">
+        <a  class="page-link link-load-pokemons" onclick="beforePokemons()">Previous</a>
+      </li>
+      <ul id="pagination-buttons-container" class="pagination">
+        ${pagePaginationHTML()}
       </ul>
+      <li id="link-next-pokemon" class="page-item">
+        <a class="page-link" href="#" onclick="nextPokemons()">Next</a>
+      </li>
+    </ul>
   `;
 }
 
 function pagePaginationHTML() {
 	let li = "";
-	showingNumberOfPage =
-		currentPage + Math.ceil(pokemonsAPI.results.length / quantityPokemons) - 1;
+	showingNumberOfPage = currentPage + pokemonsAPI.results.length - 1;
 	for (let i = currentPage; i <= showingNumberOfPage; i++) {
-		li += `<li class="page-item ${
-			i === currentPage ? "active" : ""
-		}"><a class="page-link border-unset" href="#" onclick="showCurrentPokemons(${i})">${i}</a></li>`;
+		li += `<li class="page-item d-flex"><a class="page-link border-unset" href="#" onclick="showCurrentPokemons('${firstNumberPagination}')">${i}</a></li>`;
 	}
 	return li;
 }
 
-async function nextPokemons(e) {
-	e.preventDefault();
-	if (pokemonsAPI.next !== null) {
-		currentPage++;
-		loadPokemonFrom += quantityPokemons;
-		await init();
+function nextPokemons() {
+	currentPage++;
+	let lengthPokeArray = pokemonsAPI.results.length;
+	paintingActiveButtonPagination(currentPage);
+	if (currentPage > showingNumberOfPage) {
+		firstNumberPagination = currentPage;
+		pagePaginationHTML();
+		loadPokemonFrom = firstNumberPagination * lengthPokeArray - lengthPokeArray;
+		init();
 	}
 }
 
-async function beforePokemons(e) {
-	e.preventDefault();
-	if (currentPage > 1) {
-		currentPage--;
-		loadPokemonFrom -= quantityPokemons;
-		await init();
-	}
+function beforePokemons(loadingSomePokemons) {
+	/* loadPokemonFrom = loadingSomePokemons + quantityPokemons;
+	firstNumberPagination = firstNumberPagination - 3;
+	currentPage--;
+	init(); */
 }
 
 function paintingActiveButtonPagination() {
@@ -203,14 +264,107 @@ function paintingActiveButtonPagination() {
 	}
 }
 
-async function showCurrentPokemons(page) {
-	currentPage = page;
-	loadPokemonFrom = (page - 1) * quantityPokemons;
-	await init();
+function showCurrentPokemons(currentNumber) {
+	loadPokemonFrom = currentNumber * quantityPokemons - quantityPokemons;
+	console.log(currentNumber);
+	/**Arreglar el current number aqui */
+	currentPage = currentNumber;
+	init();
 }
 
-function activateDisableButtonPagination() {
+function activateDisableButtonBeforePagination() {
 	if (currentPage == 1) {
 		document.getElementById("link-previous-pokemon").classList.add("disabled");
 	}
 }
+
+function activateDisableButtonNextPagination() {
+	if (pokemonsAPI.next === null) {
+		document.getElementById("link-next-pokemon").classList.add("disabled");
+	}
+}
+
+// function getPaginationHTML() {
+// 	let paginationContainer = document.getElementById("paginationContainer");
+// 	paginationContainer.innerHTML = "";
+
+// 	paginationContainer.innerHTML += /*html*/ `
+//       <ul id="pagination" class="pagination">
+//           <li id="link-previous-pokemon" class="page-item ${
+// 						currentPage === 1 ? "disabled" : ""
+// 					}">
+//               <a class="page-link link-load-pokemons" href="#" onclick="beforePokemons(event)">Previous</a>
+//           </li>
+//           <ul id="pagination-buttons-container" class="pagination">
+//               ${pagePaginationHTML()}
+//           </ul>
+//           <li id="link-next-pokemon" class="page-item ${
+// 						pokemonsAPI.next === null ? "disabled" : ""
+// 					}">
+//               <a class="page-link" href="#" onclick="nextPokemons(event)">Next</a>
+//           </li>
+//       </ul>
+//   `;
+// }
+
+// function pagePaginationHTML() {
+// 	let li = "";
+// 	showingNumberOfPage =
+// 		currentPage + Math.ceil(pokemonsAPI.results.length / quantityPokemons) - 1;
+// 	for (let i = currentPage; i <= showingNumberOfPage; i++) {
+// 		li += `<li class="page-item ${
+// 			i === currentPage ? "active" : ""
+// 		}"><a class="page-link border-unset" href="#" onclick="showCurrentPokemons(${i})">${i}</a></li>`;
+// 	}
+// 	return li;
+// }
+
+// async function nextPokemons(e) {
+// 	e.preventDefault();
+// 	if (pokemonsAPI.next !== null) {
+// 		currentPage++;
+// 		loadPokemonFrom += quantityPokemons;
+// 		await init();
+// 	}
+// }
+
+// async function beforePokemons(e) {
+// 	e.preventDefault();
+// 	if (currentPage > 1) {
+// 		currentPage--;
+// 		loadPokemonFrom -= quantityPokemons;
+// 		await init();
+// 	}
+// }
+
+// function paintingActiveButtonPagination() {
+// 	let paginationButtonsContainer = document.getElementById(
+// 		"pagination-buttons-container"
+// 	);
+// 	let liItems = paginationButtonsContainer.querySelectorAll("li");
+// 	//Deactived class active
+// 	for (const li of liItems) {
+// 		if (li.classList.contains("active")) {
+// 			li.classList.remove("active");
+// 		}
+// 	}
+// 	//Activeting class active
+// 	for (const li of liItems) {
+// 		const content = +li.firstChild.innerHTML;
+// 		if (content == currentPage) {
+// 			li.classList.add("active");
+// 		}
+// 	}
+// }
+
+// async function showCurrentPokemons(page) {
+// 	currentPage = page;
+// 	loadPokemonFrom = (page - 1) * quantityPokemons;
+// 	await init();
+// }
+
+// function activateDisableButtonPagination() {
+// 	if (currentPage == 1) {
+// 		document.getElementById("link-previous-pokemon").classList.add("disabled");
+// 	}
+// }

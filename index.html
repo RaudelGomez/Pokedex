@@ -21,7 +21,13 @@
 				<span>Pokedex</span>
 			</div>
 			<div>
-				<input type="search" name="search" id="searchPokemon" />
+				<input
+					type="search"
+					name="search"
+					id="searchPokemon"
+					placeholder="more than 2 letter"
+					onkeyup="searchingNamePokemon()"
+				/>
 			</div>
 		</nav>
 		<main>
@@ -43,6 +49,7 @@
 				></div>
 			</section>
 		</main>
+		<article id="img-pop-container"></article>
 		<nav
 			id="paginationContainer"
 			aria-label="pagination"
