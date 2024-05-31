@@ -202,6 +202,10 @@ footer {
 	cursor: pointer;
 }
 
+.border-unset {
+	border-radius: unset !important;
+}
+
 @media (max-width: 380px) {
 	nav {
 		flex-direction: column;
