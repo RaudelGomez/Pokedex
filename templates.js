@@ -83,14 +83,15 @@ function typesPokemonContainerOpenHTML(type) {
 function infoPokemonOpenHTML(thePokemon) {
 	return /*html*/ `
   <div class="bg-color-info-card">
-    <div class="d-flex p-2 info-headline">
-      <p class="text-center flex-grow-1 mb-0 headline-border-bottom active-info">main</p>
-      <p class="text-center flex-grow-1 mb-0 headline-border-bottom" onclick="showInfo()">stats</p>
-      <p class="text-center flex-grow-1 mb-0 headline-border-bottom">evo chain</p>  
+    <div class="d-flex info-headline">
+      <p id="menu-info-main" class="text-center flex-grow-1 mb-0 headline-border-bottom active-info p-2" onclick="showInfo('info-main')">main</p>
+      <p id="menu-info-stats" class="text-center flex-grow-1 mb-0 headline-border-bottom p-2" onclick="showInfo('info-stats')">stats</p>
+      <p id="menu-info-evo" class="text-center flex-grow-1 mb-0 headline-border-bottom p-2" onclick="showInfo('info-evo')">evo-from</p>  
     </div>
     <div id="info-pokemon" class="p-2">
       ${mainInfoHTML(thePokemon)}
-      ${statsPokeHTML()}
+      <div id="info-stats" class="info-stats d-none"></div>
+      <div id="info-evo" class="info-evo d-none d-flex flex-column justify-content-center align-items-center">
     </div>
   </div>
   `;
@@ -114,5 +115,3 @@ function mainInfoHTML(thePokemon) {
     </div>
   `;
 }
-
-function statsPokeHTML() {}

@@ -226,12 +226,47 @@ footer {
 	border-bottom: 3px solid transparent;
 }
 
+.info-headline p:hover {
+	cursor: pointer;
+	border-bottom: 3px solid var(--font-color);
+}
+
 .info-headline p.active-info {
 	border-bottom: 3px solid var(--pokemon-color);
 }
 
 .info-main p > span {
 	width: 50%;
+}
+
+#info-pokemon > div {
+	height: 205px;
+}
+
+.info-stats {
+	color: black;
+	display: flex;
+	flex-direction: column;
+}
+
+.info-stats p {
+	border-radius: 8px;
+	text-align: center;
+}
+
+.stat {
+	height: 2px;
+	margin-bottom: 8px;
+}
+
+.name-stat {
+	color: var(--font-color);
+}
+
+.img-evolution {
+	width: 60%;
+	height: 60%;
+	object-fit: cover;
 }
 
 /*Pagination*/

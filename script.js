@@ -181,6 +181,8 @@ async function openImg(idPokemon) {
 	)}`;
 	renderTypesPokemonOpen(thePokemon, getPokemonColorPhoto);
 	infoPokemonOpen(thePokemon);
+	statsPoke(thePokemon);
+	await infoEvo(thePokemon);
 }
 
 function renderTypesPokemonOpen(pokemonData, getPokemonColorPhoto) {
@@ -222,7 +224,6 @@ function infoPokemonOpen(thePokemon) {
 	let rootElement = document.querySelector(":root");
 	rootElement.style.setProperty("--pokemon-color", colorImgOpen);
 	loadingAbilities(thePokemon);
-	statsPoke(thePokemon);
 }
 
 function loadingAbilities(thePokemon) {
@@ -235,11 +236,53 @@ function loadingAbilities(thePokemon) {
 }
 
 function statsPoke(thePokemon) {
-	console.log(thePokemon);
+	let infoStats = document.getElementById("info-stats");
+	for (let i = 0; i < thePokemon.stats.length; i++) {
+		let stat = thePokemon.stats[i].base_stat;
+		const nameStat = thePokemon.stats[i].stat.name;
+		if (stat > 100) {
+			stat = 100;
+		}
+		infoStats.innerHTML += /*html*/ `
+			<p id="nameStat${i}" class="text-start mb-0 name-stat">${nameStat}: ${stat}</p>
+			<p id="stat${i}" class="bg-warning stat" style="width: ${stat}%"></p>
+		`;
+	}
 }
 
-function showInfo() {
-	console.log("showing");
+function showInfo(idContainer) {
+	document.getElementById("info-stats").classList.add("d-none");
+	document.getElementById("info-main").classList.add("d-none");
+	document.getElementById("info-evo").classList.add("d-none");
+	document.getElementById(idContainer).classList.remove("d-none");
+
+	document.getElementById("menu-info-stats").classList.remove("active-info");
+	document.getElementById("menu-info-main").classList.remove("active-info");
+	document.getElementById("menu-info-evo").classList.remove("active-info");
+	document.getElementById(`menu-${idContainer}`).classList.add("active-info");
+}
+
+async function infoEvo(thePokemon) {
+	let evolution = thePokemon.species.url;
+	let response = await fetch(evolution);
+	let dataEvolution = await response.json();
+	let nameEvolution = dataEvolution?.evolves_from_species?.name;
+	let urlImg = "No evolutions before";
+	if (nameEvolution) {
+		let nameFoundApi = await fetch(
+			`https://pokeapi.co/api/v2/pokemon/${nameEvolution}`
+		);
+		let nameFoundApiJON = await nameFoundApi.json();
+		urlImg = nameFoundApiJON.sprites.other.dream_world.front_default;
+		document.getElementById("info-evo").innerHTML = /*html*/ `
+		<img class="img-evolution" src="${urlImg}" alt="${nameEvolution}" />
+		<figcaption class="first-letter-uppercase mt-2">${nameEvolution}</figcaption>
+		`;
+	} else {
+		document.getElementById("info-evo").innerHTML = /*html*/ `
+		<p>${urlImg}</p>
+		`;
+	}
 }
 
 /*Pagination */
