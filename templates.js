@@ -69,7 +69,7 @@ function openImgHTML(pokemonData) {
 ;`;
 }
 
-function typesPokemonContainerOpenHTML(pokemonData, type) {
+function typesPokemonContainerOpenHTML(type) {
 	return /*html*/ `
     <figure class="d-flex justify-content-center flex-column align-items-center mb-0">
       <img class="type-pokemon-img" src="${type.img}" alt="${type.name}">  
@@ -79,3 +79,40 @@ function typesPokemonContainerOpenHTML(pokemonData, type) {
     </figure>
     `;
 }
+
+function infoPokemonOpenHTML(thePokemon) {
+	return /*html*/ `
+  <div class="bg-color-info-card">
+    <div class="d-flex p-2 info-headline">
+      <p class="text-center flex-grow-1 mb-0 headline-border-bottom active-info">main</p>
+      <p class="text-center flex-grow-1 mb-0 headline-border-bottom" onclick="showInfo()">stats</p>
+      <p class="text-center flex-grow-1 mb-0 headline-border-bottom">evo chain</p>  
+    </div>
+    <div id="info-pokemon" class="p-2">
+      ${mainInfoHTML(thePokemon)}
+      ${statsPokeHTML()}
+    </div>
+  </div>
+  `;
+}
+
+function mainInfoHTML(thePokemon) {
+	return /*html*/ `
+    <div id="info-main" class="info-main">
+        <p class="d-flex mb-1"><span>Height:</span> <span class="flex-grow-1">${
+					thePokemon.height / 10
+				} m</span></p>
+        <p class="d-flex mb-1"><span>Weight:</span><span>${
+					thePokemon.weight / 100
+				} Kg</span> </p>
+        <p class="d-flex mb-1"><span>Experience:</span><span>${
+					thePokemon.base_experience
+				}</span></p>
+        <p class="d-flex mb-1">
+        <span>Abilities:</span><span id="abilities"></span>
+        </p>
+    </div>
+  `;
+}
+
+function statsPokeHTML() {}

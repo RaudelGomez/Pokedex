@@ -180,6 +180,7 @@ async function openImg(idPokemon) {
 		getPokemonColorPhoto
 	)}`;
 	renderTypesPokemonOpen(thePokemon, getPokemonColorPhoto);
+	infoPokemonOpen(thePokemon);
 }
 
 function renderTypesPokemonOpen(pokemonData, getPokemonColorPhoto) {
@@ -187,7 +188,7 @@ function renderTypesPokemonOpen(pokemonData, getPokemonColorPhoto) {
 	for (let i = 0; i < getPokemonColorPhoto.length; i++) {
 		const type = getPokemonColorPhoto[i];
 		typesPokemonContainerOpen.innerHTML += /*html*/ `
-      ${typesPokemonContainerOpenHTML(pokemonData, type)}
+      ${typesPokemonContainerOpenHTML(type)}
     `;
 	}
 }
@@ -203,8 +204,7 @@ function savingCurrentColor(idPokemon) {
 		}
 	}
 }
-function closeImgOpen(e) {
-	console.log(e);
+function closeImgOpen() {
 	let imgPopContainer = document.getElementById("img-pop-container");
 	imgPopContainer.classList.remove("img-pop-container");
 	imgPopContainer.innerHTML = "";
@@ -214,7 +214,33 @@ function stopPropagation(event) {
 	event.stopPropagation();
 }
 
-function infoPokemonOpen() {}
+function infoPokemonOpen(thePokemon) {
+	let infoPokemonOpenContainer = document.getElementById("info-pokemon-open");
+	infoPokemonOpenContainer.innerHTML = /*html*/ `${infoPokemonOpenHTML(
+		thePokemon
+	)}`;
+	let rootElement = document.querySelector(":root");
+	rootElement.style.setProperty("--pokemon-color", colorImgOpen);
+	loadingAbilities(thePokemon);
+	statsPoke(thePokemon);
+}
+
+function loadingAbilities(thePokemon) {
+	let abilities = document.getElementById("abilities");
+	abilities.innerHTML = "";
+	for (let i = 0; i < thePokemon.abilities.length; i++) {
+		const ability = thePokemon.abilities[i];
+		abilities.innerHTML += /*html*/ `<span class="first-letter-uppercase"> ${ability.ability.name}</span> `;
+	}
+}
+
+function statsPoke(thePokemon) {
+	console.log(thePokemon);
+}
+
+function showInfo() {
+	console.log("showing");
+}
 
 /*Pagination */
 function getPagination() {
