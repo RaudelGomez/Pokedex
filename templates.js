@@ -5,11 +5,11 @@ function LoadingOnePokemonHTML(pokemonData, getPokemonColorPhoto) {
 		}" class="card" style="width: 15rem; background-color: ${
 		getPokemonColorPhoto[0]["color"]
 	}" >
-      <h5 class="card-title p-2 text-center position-relative">
+      <h5 class="card-title p-2 text-center position-relative cards-headline">
         <span class="pokemonId-card position-absolute">#${pokemonData.id}</span>
         <span class="first-letter-uppercase">${pokemonData.name}</span>
       </h5>
-      <div class="container-img-card"></div>
+      <!-- <div class="container-img-card"></div> -->
       <img
         src="${
 					pokemonData.sprites?.other.dream_world.front_default
@@ -43,16 +43,13 @@ function typesPokemonContainerHTML(pokemonData, type, i) {
 }
 
 function openImgHTML(pokemonData) {
-	console.log(pokemonData);
-	console.log(colorImgOpen);
-	return /*html*/ `<div id="card${
+	return /*html*/ `<div id="cardOpen${
 		pokemonData.id
-	}" class="card" style="width: 15rem; background-color: ${colorImgOpen}" onclick="stopPropagation(event)">
-    <h5 class="card-title p-2 text-center position-relative">
+	}" class="card" style="width: 15rem; background-color: ${colorImgOpen}; padding: 0.09rem;" onclick="stopPropagation(event)">
+    <h5 class="card-title p-2 text-center position-relative cards-headline">
       <span class="pokemonId-card position-absolute">#${pokemonData.id}</span>
       <span class="first-letter-uppercase">${pokemonData.name}</span>
     </h5>
-    <div class="container-img-card"></div>
     <img
       src="${
 				pokemonData.sprites?.other.dream_world.front_default
@@ -64,9 +61,21 @@ function openImgHTML(pokemonData) {
       class="card-img-top img-pokemon"
       alt="${pokemonData.name}"
     />
-    <div id="types-pokemon${pokemonData.id}"
-      class="pokemon-types card-body d-flex justify-content-center align-items-center gap-3"
+    <div id="types-pokemon-open"
+      class="pokemon-types card-body d-flex justify-content-center align-items-center gap-3 p-2"
     ></div>
+    <div id="info-pokemon-open"></div>
   </div>
 ;`;
+}
+
+function typesPokemonContainerOpenHTML(pokemonData, type) {
+	return /*html*/ `
+    <figure class="d-flex justify-content-center flex-column align-items-center mb-0">
+      <img class="type-pokemon-img" src="${type.img}" alt="${type.name}">  
+      <figcaption>
+        ${type.name}
+      </figcaption>
+    </figure>
+    `;
 }
