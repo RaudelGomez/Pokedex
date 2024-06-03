@@ -245,8 +245,9 @@ function statsPoke(thePokemon) {
 		}
 		infoStats.innerHTML += /*html*/ `
 			<p id="nameStat${i}" class="text-start mb-0 name-stat">${nameStat}: ${stat}</p>
-			<p id="stat${i}" class="bg-warning stat" style="width: ${stat}%"></p>
+			<p id="stat${i}" class="bg-warning stat"></p>
 		`;
+		document.getElementById(`stat${i}`).style.width = `${stat}%`;
 	}
 }
 
@@ -273,10 +274,12 @@ async function infoEvo(thePokemon) {
 			`https://pokeapi.co/api/v2/pokemon/${nameEvolution}`
 		);
 		let nameFoundApiJON = await nameFoundApi.json();
-		urlImg = nameFoundApiJON.sprites.other.dream_world.front_default;
+		urlImg = nameFoundApiJON.sprites.other.dream_world.front_default
+			? nameFoundApiJON.sprites.other.dream_world.front_default
+			: nameFoundApiJON.sprites?.other.home.front_default;
 		document.getElementById("info-evo").innerHTML = /*html*/ `
 		<img class="img-evolution" src="${urlImg}" alt="${nameEvolution}" />
-		<figcaption class="first-letter-uppercase mt-2">${nameEvolution}</figcaption>
+		<figcaption class="first-letter-uppercase mt-2 figNameEvolution">${nameEvolution}</figcaption>
 		`;
 	} else {
 		document.getElementById("info-evo").innerHTML = /*html*/ `

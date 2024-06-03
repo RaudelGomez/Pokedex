@@ -266,7 +266,18 @@ footer {
 .img-evolution {
 	width: 60%;
 	height: 60%;
-	object-fit: cover;
+	object-fit: contain;
+	transition: all 225ms ease-in-out;
+	cursor: pointer;
+}
+
+.info-evo:hover .img-evolution {
+	transform: scale(1.4);
+}
+
+.info-evo:hover .figNameEvolution {
+	position: absolute;
+	z-index: -100;
 }
 
 /*Pagination*/
