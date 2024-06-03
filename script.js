@@ -168,7 +168,6 @@ async function openImg(idPokemon) {
 	try {
 		let response = await fetch(`${BASE_URL}/${idPokemon}`);
 		thePokemon = await response.json();
-		console.log(thePokemon);
 	} catch (error) {
 		console.log(error);
 	}
@@ -187,6 +186,16 @@ function savingCurrentColor(idPokemon) {
 			colorImgOpen = backgroundColor;
 		}
 	}
+}
+function closeImgOpen(e) {
+	console.log(e);
+	let imgPopContainer = document.getElementById("img-pop-container");
+	imgPopContainer.classList.remove("img-pop-container");
+	imgPopContainer.innerHTML = "";
+}
+
+function stopPropagation(event) {
+	event.stopPropagation();
 }
 
 /*Pagination */
