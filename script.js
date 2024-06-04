@@ -141,27 +141,31 @@ async function savingNamePokemonArray() {
 
 function searchingNamePokemon() {
 	namesFound = [];
-	let namePoke = document.getElementById("searchPokemon").value;
-	if (namePoke.length >= 3) {
-		namesFound = [];
-		namesFound = namePokemons.filter((name) => name.name.includes(namePoke));
-		if (namesFound.length >= 1) {
-			loadingPokemonsSearched(namesFound);
+	setTimeout(() => {
+		let namePoke = document.getElementById("searchPokemon").value;
+		if (namePoke.length >= 3) {
+			namesFound = [];
+			namesFound = namePokemons.filter((name) => name.name.includes(namePoke));
+			if (namesFound.length >= 1) {
+				loadingPokemonsSearched(namesFound);
+			}
+		} else {
+			namesFound = [];
+			loadingPokemons();
 		}
-	} else {
-		namesFound = [];
-		loadingPokemons();
-	}
+	}, 300);
 }
 
 async function loadingPokemonsSearched(resultsPokemons) {
 	document.getElementById("pokemonList").innerHTML = "";
-	for (let i = 0; i < resultsPokemons.length; i++) {
+	for (let i = 0; i < 10; i++) {
 		const pokemon = resultsPokemons[i];
-		let pokemonData = await getPokemonData(pokemon.url);
-		let getPokemonColorPhoto = pokemonColor(pokemonData);
-		LoadingOnePokemon(pokemonData, getPokemonColorPhoto);
-		renderTypesPokemon(pokemonData.id, getPokemonColorPhoto, pokemonData);
+		if (pokemon) {
+			let pokemonData = await getPokemonData(pokemon.url);
+			let getPokemonColorPhoto = pokemonColor(pokemonData);
+			LoadingOnePokemon(pokemonData, getPokemonColorPhoto);
+			renderTypesPokemon(pokemonData.id, getPokemonColorPhoto, pokemonData);
+		}
 	}
 }
 

@@ -5,9 +5,11 @@ function LoadingOnePokemonHTML(pokemonData, getPokemonColorPhoto) {
 		}" class="card" style="width: 15rem; background-color: ${
 		getPokemonColorPhoto[0]["color"]
 	}" >
-      <h5 class="card-title p-2 text-center position-relative cards-headline">
-        <span class="pokemonId-card position-absolute">#${pokemonData.id}</span>
-        <span class="first-letter-uppercase">${pokemonData.name}</span>
+      <h5 class="card-title p-2 text-center position-relative cards-headline d-flex">
+        <span class="pokemonId-card">#${pokemonData.id}</span>
+        <span class="first-letter-uppercase text-center align-content-center flex-grow-1 card-headline-name">${
+					pokemonData.name
+				}</span>
       </h5>
       <img
         src="${
@@ -49,16 +51,16 @@ function openImgHTML(pokemonData) {
 	return /*html*/ `<div id="cardOpen${
 		pokemonData.id
 	}" class="card" style="width: 15rem; background-color: ${colorImgOpen}; padding: 0.09rem;" onclick="stopPropagation(event)">
-    <h5 class="card-title p-2 text-center position-relative cards-headline">
-      <span class="pokemonId-card position-absolute">#${pokemonData.id}</span>
-      <span class="first-letter-uppercase">${pokemonData.name}</span>
+    <h5 class="card-title p-2 text-center position-relative cards-headline d-flex">
+      <span class="pokemonId-card">#${pokemonData.id}</span>
+      <span class="first-letter-uppercase text-center align-content-center flex-grow-1 card-headline-name">${
+				pokemonData.name
+			}</span>
     </h5>
     <img
       src="${
-				pokemonData.sprites?.other.dream_world.front_default
-					? pokemonData.sprites?.other.dream_world.front_default
-					: pokemonData.sprites?.other.home.front_default
-					? pokemonData.sprites?.other.showdown.front_default
+				pokemonData.sprites.other.dream_world?.front_default
+					? pokemonData.sprites.other.dream_world?.front_default
 					: pokemonData.sprites?.front_default
 			}"
       class="card-img-top img-pokemon"
