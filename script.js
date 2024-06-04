@@ -1,6 +1,6 @@
 const BASE_URL = "https://pokeapi.co/api/v2/pokemon";
 let loadPokemonFrom = 0;
-let quantityPokemons = 9;
+let quantityPokemons = 14;
 let pokemonsAPI;
 let allPokemonsAPI;
 let namePokemons = [];
@@ -39,25 +39,33 @@ async function init() {
 }
 
 async function getAllPokemons() {
-	const spinnerContainer = document.getElementById("spinnerContainer");
-	const spinner = document.getElementById("pokemon-ball-spinner");
 	try {
-		//Show spinner
-		spinnerContainer.style.display = "flex";
-		spinner.classList.add("spinner-animation");
+		loading();
 		let response = await fetch(
 			`${BASE_URL}?limit=${quantityPokemons}&offset=${loadPokemonFrom}.`
 		);
 		pokemonsAPI = await response.json();
-		//Hidden spinner
-		spinnerContainer.style.display = "none";
-		spinner.classList.remove("spinner-animation");
+		disablebLoading();
 	} catch (error) {
 		console.log(error);
-		//Hidden spinner
-		spinnerContainer.style.display = "none";
-		spinner.classList.remove("spinner-animation");
+		disablebLoading();
 	}
+}
+
+function loading() {
+	//Show spinner
+	const spinnerContainer = document.getElementById("spinnerContainer");
+	const spinner = document.getElementById("pokemon-ball-spinner");
+	spinnerContainer.style.display = "flex";
+	spinner.classList.add("spinner-animation");
+}
+
+function disablebLoading() {
+	//Hidden spinner
+	const spinnerContainer = document.getElementById("spinnerContainer");
+	const spinner = document.getElementById("pokemon-ball-spinner");
+	spinnerContainer.style.display = "none";
+	spinner.classList.remove("spinner-animation");
 }
 
 async function loadingPokemons() {
@@ -139,21 +147,19 @@ async function savingNamePokemonArray() {
 	}
 }
 
-function searchingNamePokemon() {
+async function searchingNamePokemon() {
 	namesFound = [];
-	setTimeout(() => {
-		let namePoke = document.getElementById("searchPokemon").value;
-		if (namePoke.length >= 3) {
-			namesFound = [];
-			namesFound = namePokemons.filter((name) => name.name.includes(namePoke));
-			if (namesFound.length >= 1) {
-				loadingPokemonsSearched(namesFound);
-			}
-		} else {
-			namesFound = [];
-			loadingPokemons();
+	let namePoke = document.getElementById("searchPokemon").value;
+	if (namePoke.length >= 3) {
+		namesFound = [];
+		namesFound = namePokemons.filter((name) => name.name.includes(namePoke));
+		if (namesFound.length >= 1) {
+			await loadingPokemonsSearched(namesFound);
 		}
-	}, 300);
+	} else {
+		namesFound = [];
+		loadingPokemons();
+	}
 }
 
 async function loadingPokemonsSearched(resultsPokemons) {
@@ -186,17 +192,15 @@ async function openImg(idPokemon) {
 	}
 	let imgPopContainer = document.getElementById("img-pop-container");
 	imgPopContainer.classList.add("img-pop-container");
-	imgPopContainer.innerHTML = /*html*/ `${openImgHTML(
-		thePokemon,
-		getPokemonColorPhoto
-	)}`;
-	renderTypesPokemonOpen(thePokemon, getPokemonColorPhoto);
+	imgPopContainer.innerHTML = /*html*/ `${openImgHTML(thePokemon)}`;
+	await showArrow(idPokemon);
+	renderTypesPokemonOpen(getPokemonColorPhoto);
 	infoPokemonOpen(thePokemon);
 	statsPoke(thePokemon);
 	await infoEvo(thePokemon);
 }
 
-function renderTypesPokemonOpen(pokemonData, getPokemonColorPhoto) {
+function renderTypesPokemonOpen(getPokemonColorPhoto) {
 	let typesPokemonContainerOpen = document.getElementById(`types-pokemon-open`);
 	for (let i = 0; i < getPokemonColorPhoto.length; i++) {
 		const type = getPokemonColorPhoto[i];
@@ -299,6 +303,60 @@ async function infoEvo(thePokemon) {
 	}
 }
 
+async function nextPokemon(idPokemon) {
+	let lastPokemonObject = namePokemons.length - 1;
+	let nameLastPokemon = allPokemonsAPI.results[lastPokemonObject].name;
+	let response = await fetch(`${BASE_URL}/${nameLastPokemon}`);
+	let pokemonFound = await response.json();
+	let idLastPokemon = pokemonFound.id;
+	if (idPokemon < idLastPokemon) {
+		let nextPokemonId = idPokemon + 1;
+		openImgNext(nextPokemonId);
+	}
+}
+
+async function beforePokemon(idPokemon) {
+	if (idPokemon >= 2) {
+		let nextPokemonId = idPokemon + -1;
+		openImgNext(nextPokemonId);
+	}
+}
+
+async function openImgNext(idPokemon) {
+	let getPokemonColorPhoto;
+	try {
+		let response = await fetch(`${BASE_URL}/${idPokemon}`);
+		thePokemon = await response.json();
+		getPokemonColorPhoto = pokemonColor(thePokemon);
+	} catch (error) {
+		console.log(error);
+	}
+	let imgPopContainer = document.getElementById("img-pop-container");
+	imgPopContainer.classList.add("img-pop-container");
+	imgPopContainer.innerHTML = /*html*/ `${openImgHTML(
+		thePokemon,
+		getPokemonColorPhoto[0].color
+	)}`;
+	await showArrow(idPokemon);
+	renderTypesPokemonOpen(getPokemonColorPhoto);
+	infoPokemonOpen(thePokemon);
+	statsPoke(thePokemon);
+	await infoEvo(thePokemon);
+}
+
+async function showArrow(idPokemon) {
+	if (idPokemon == 1) {
+		document.getElementById("arrow-left").classList.add("d-none");
+	}
+	let lastPokemonObject = namePokemons.length - 1;
+	let nameLastPokemon = allPokemonsAPI.results[lastPokemonObject].name;
+	let response = await fetch(`${BASE_URL}/${nameLastPokemon}`);
+	let pokemonFound = await response.json();
+	let idLastPokemon = pokemonFound.id;
+	if (idPokemon == idLastPokemon) {
+		document.getElementById("arrow-right").classList.add("d-none");
+	}
+}
 /*Pagination */
 function getPagination() {
 	getPaginationHTML();

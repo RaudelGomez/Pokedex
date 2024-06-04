@@ -107,10 +107,7 @@ main {
 	width: 10rem;
 	height: 12rem;
 	position: absolute;
-	/* bottom: 4rem; */
 	right: -1.2rem;
-	/* right: -1.5rem; */
-	/* opacity: 0.3; */
 	opacity: 0.2;
 }
 
@@ -296,6 +293,14 @@ footer {
 	z-index: -100;
 }
 
+.arrow-slide {
+	width: 50px;
+	height: 50px;
+	margin: 16px;
+	cursor: pointer;
+	padding: 8px;
+}
+
 /*Pagination*/
 .link-load-pokemons {
 	cursor: pointer;
@@ -306,8 +311,19 @@ footer {
 }
 
 @media (max-width: 420px) {
+	html {
+		font-size: 0.7rem;
+	}
+
 	nav {
 		flex-direction: column;
 		gap: 16px;
+	}
+
+	.arrow-slide {
+		width: 25px;
+		height: 250px;
+		margin: 8px;
+		padding: 2px;
 	}
 }
