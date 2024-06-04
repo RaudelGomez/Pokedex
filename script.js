@@ -298,7 +298,6 @@ async function infoEvo(thePokemon) {
 /*Pagination */
 function getPagination() {
 	getPaginationHTML();
-	paintingActiveButtonPagination();
 	activateDisableButtonBeforePagination();
 	activateDisableButtonNextPagination();
 }
@@ -324,9 +323,10 @@ function getPaginationHTML() {
 
 function pagePaginationHTML() {
 	let li = "";
-	showingNumberOfPage = currentPage + pokemonsAPI.results.length - 1;
+	showingNumberOfPage =
+		currentPage + Math.ceil(pokemonsAPI.results.length / quantityPokemons) - 1;
 	for (let i = currentPage; i <= showingNumberOfPage; i++) {
-		li += `<li class="page-item d-flex"><a class="page-link border-unset" href="#" onclick="showCurrentPokemons('${firstNumberPagination}')">${i}</a></li>`;
+		li += `<li class="page-item ${i} active"><a class="page-link border-unset" href="#" onclick="showCurrentPokemons(${i})">${i}</a></li>`;
 	}
 	return li;
 }
@@ -334,7 +334,6 @@ function pagePaginationHTML() {
 function nextPokemons() {
 	currentPage++;
 	let lengthPokeArray = pokemonsAPI.results.length;
-	paintingActiveButtonPagination(currentPage);
 	if (currentPage > showingNumberOfPage) {
 		firstNumberPagination = currentPage;
 		pagePaginationHTML();
@@ -343,37 +342,17 @@ function nextPokemons() {
 	}
 }
 
-function beforePokemons(loadingSomePokemons) {
-	/* loadPokemonFrom = loadingSomePokemons + quantityPokemons;
-	firstNumberPagination = firstNumberPagination - 3;
-	currentPage--;
-	init(); */
-}
-
-function paintingActiveButtonPagination() {
-	let paginationButtonsContainer = document.getElementById(
-		"pagination-buttons-container"
-	);
-	let liItems = paginationButtonsContainer.querySelectorAll("li");
-	//Deactived class active
-	for (const li of liItems) {
-		if (li.classList.contains("active")) {
-			li.classList.remove("active");
-		}
-	}
-	//Activeting class active
-	for (const li of liItems) {
-		const content = +li.firstChild.innerHTML;
-		if (content == currentPage) {
-			li.classList.add("active");
-		}
+function beforePokemons() {
+	if (currentPage > 1) {
+		currentPage--;
+		loadPokemonFrom -= quantityPokemons;
+		init();
 	}
 }
 
 function showCurrentPokemons(currentNumber) {
 	loadPokemonFrom = currentNumber * quantityPokemons - quantityPokemons;
 	console.log(currentNumber);
-	/**Arreglar el current number aqui */
 	currentPage = currentNumber;
 	init();
 }
@@ -389,88 +368,3 @@ function activateDisableButtonNextPagination() {
 		document.getElementById("link-next-pokemon").classList.add("disabled");
 	}
 }
-
-// function getPaginationHTML() {
-// 	let paginationContainer = document.getElementById("paginationContainer");
-// 	paginationContainer.innerHTML = "";
-
-// 	paginationContainer.innerHTML += /*html*/ `
-//       <ul id="pagination" class="pagination">
-//           <li id="link-previous-pokemon" class="page-item ${
-// 						currentPage === 1 ? "disabled" : ""
-// 					}">
-//               <a class="page-link link-load-pokemons" href="#" onclick="beforePokemons(event)">Previous</a>
-//           </li>
-//           <ul id="pagination-buttons-container" class="pagination">
-//               ${pagePaginationHTML()}
-//           </ul>
-//           <li id="link-next-pokemon" class="page-item ${
-// 						pokemonsAPI.next === null ? "disabled" : ""
-// 					}">
-//               <a class="page-link" href="#" onclick="nextPokemons(event)">Next</a>
-//           </li>
-//       </ul>
-//   `;
-// }
-
-// function pagePaginationHTML() {
-// 	let li = "";
-// 	showingNumberOfPage =
-// 		currentPage + Math.ceil(pokemonsAPI.results.length / quantityPokemons) - 1;
-// 	for (let i = currentPage; i <= showingNumberOfPage; i++) {
-// 		li += `<li class="page-item ${
-// 			i === currentPage ? "active" : ""
-// 		}"><a class="page-link border-unset" href="#" onclick="showCurrentPokemons(${i})">${i}</a></li>`;
-// 	}
-// 	return li;
-// }
-
-// async function nextPokemons(e) {
-// 	e.preventDefault();
-// 	if (pokemonsAPI.next !== null) {
-// 		currentPage++;
-// 		loadPokemonFrom += quantityPokemons;
-// 		await init();
-// 	}
-// }
-
-// async function beforePokemons(e) {
-// 	e.preventDefault();
-// 	if (currentPage > 1) {
-// 		currentPage--;
-// 		loadPokemonFrom -= quantityPokemons;
-// 		await init();
-// 	}
-// }
-
-// function paintingActiveButtonPagination() {
-// 	let paginationButtonsContainer = document.getElementById(
-// 		"pagination-buttons-container"
-// 	);
-// 	let liItems = paginationButtonsContainer.querySelectorAll("li");
-// 	//Deactived class active
-// 	for (const li of liItems) {
-// 		if (li.classList.contains("active")) {
-// 			li.classList.remove("active");
-// 		}
-// 	}
-// 	//Activeting class active
-// 	for (const li of liItems) {
-// 		const content = +li.firstChild.innerHTML;
-// 		if (content == currentPage) {
-// 			li.classList.add("active");
-// 		}
-// 	}
-// }
-
-// async function showCurrentPokemons(page) {
-// 	currentPage = page;
-// 	loadPokemonFrom = (page - 1) * quantityPokemons;
-// 	await init();
-// }
-
-// function activateDisableButtonPagination() {
-// 	if (currentPage == 1) {
-// 		document.getElementById("link-previous-pokemon").classList.add("disabled");
-// 	}
-// }
