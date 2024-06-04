@@ -9,13 +9,10 @@ function LoadingOnePokemonHTML(pokemonData, getPokemonColorPhoto) {
         <span class="pokemonId-card position-absolute">#${pokemonData.id}</span>
         <span class="first-letter-uppercase">${pokemonData.name}</span>
       </h5>
-      <!-- <div class="container-img-card"></div> -->
       <img
         src="${
-					pokemonData.sprites?.other.dream_world.front_default
-						? pokemonData.sprites?.other.dream_world.front_default
-						: pokemonData.sprites?.other.home.front_default
-						? pokemonData.sprites?.other.showdown.front_default
+					pokemonData.sprites.other.dream_world?.front_default
+						? pokemonData.sprites.other.dream_world?.front_default
 						: pokemonData.sprites?.front_default
 				}"
         class="card-img-top img-pokemon"
@@ -28,6 +25,12 @@ function LoadingOnePokemonHTML(pokemonData, getPokemonColorPhoto) {
     </div>
 `;
 }
+
+// pokemonData.sprites.other.dream_world?.front_default
+// 						? pokemonData.sprites.other.dream_world?.front_default
+// 						: pokemonData.sprites.other.home?.front_default
+// 						? pokemonData.sprites.other.showdown?.front_default
+// 						: pokemonData.sprites?.front_default
 
 function typesPokemonContainerHTML(pokemonData, type, i) {
 	return /*html*/ `

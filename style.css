@@ -49,6 +49,10 @@ main {
 	background-color: var(--secondary-color);
 }
 
+#searchPokemon {
+	width: 220px;
+}
+
 .pokemonId-card {
 	left: 8px;
 }
@@ -289,7 +293,7 @@ footer {
 	border-radius: unset !important;
 }
 
-@media (max-width: 380px) {
+@media (max-width: 420px) {
 	nav {
 		flex-direction: column;
 		gap: 16px;

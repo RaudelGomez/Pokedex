@@ -1,9 +1,10 @@
 const BASE_URL = "https://pokeapi.co/api/v2/pokemon";
 let loadPokemonFrom = 0;
-let quantityPokemons = 3;
+let quantityPokemons = 9;
 let pokemonsAPI;
 let allPokemonsAPI;
 let namePokemons = [];
+let namesFound = [];
 let colorImgOpen = "";
 const typeColors = [
 	{ name: "water", color: "#3399FF", img: "./img/water.png" },
@@ -125,8 +126,9 @@ function displayBlock(id, i, numberTypes) {
 }
 
 async function savingNamePokemonArray() {
+	namePokemons = [];
 	try {
-		let response = await fetch(`${BASE_URL}?limit=900&offset=0.`);
+		let response = await fetch(`${BASE_URL}?limit=10000&offset=0.`);
 		allPokemonsAPI = await response.json();
 		for (let i = 0; i < allPokemonsAPI.results.length; i++) {
 			const pokemonName = allPokemonsAPI.results[i];
@@ -138,22 +140,22 @@ async function savingNamePokemonArray() {
 }
 
 function searchingNamePokemon() {
-	let namesFound = [];
+	namesFound = [];
 	let namePoke = document.getElementById("searchPokemon").value;
 	if (namePoke.length >= 3) {
+		namesFound = [];
 		namesFound = namePokemons.filter((name) => name.name.includes(namePoke));
 		if (namesFound.length >= 1) {
 			loadingPokemonsSearched(namesFound);
 		}
 	} else {
+		namesFound = [];
 		loadingPokemons();
 	}
 }
 
 async function loadingPokemonsSearched(resultsPokemons) {
 	document.getElementById("pokemonList").innerHTML = "";
-	// console.log(resultsPokemons);
-	// console.log(allPokemonsAPI.results);
 	for (let i = 0; i < resultsPokemons.length; i++) {
 		const pokemon = resultsPokemons[i];
 		let pokemonData = await getPokemonData(pokemon.url);
@@ -161,6 +163,11 @@ async function loadingPokemonsSearched(resultsPokemons) {
 		LoadingOnePokemon(pokemonData, getPokemonColorPhoto);
 		renderTypesPokemon(pokemonData.id, getPokemonColorPhoto, pokemonData);
 	}
+}
+
+function deleteSearch() {
+	document.getElementById("searchPokemon").value = "";
+	init();
 }
 
 async function openImg(idPokemon) {
