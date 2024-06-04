@@ -28,12 +28,6 @@ function LoadingOnePokemonHTML(pokemonData, getPokemonColorPhoto) {
 `;
 }
 
-// pokemonData.sprites.other.dream_world?.front_default
-// 						? pokemonData.sprites.other.dream_world?.front_default
-// 						: pokemonData.sprites.other.home?.front_default
-// 						? pokemonData.sprites.other.showdown?.front_default
-// 						: pokemonData.sprites?.front_default
-
 function typesPokemonContainerHTML(pokemonData, type, i) {
 	return /*html*/ `
     <figure class="d-flex justify-content-center flex-column align-items-center mb-0" onclick="changeBGColor('${type.color}', ${pokemonData.id})">
@@ -77,7 +71,7 @@ function openImgHTML(pokemonData) {
 function typesPokemonContainerOpenHTML(type) {
 	return /*html*/ `
     <figure class="d-flex justify-content-center flex-column align-items-center mb-0">
-      <img class="type-pokemon-img" src="${type.img}" alt="${type.name}">  
+      <img class="type-pokemon-img-open" src="${type.img}" alt="${type.name}">  
       <figcaption>
         ${type.name}
       </figcaption>

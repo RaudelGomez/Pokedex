@@ -158,6 +158,13 @@ main {
 	animation: rotationTypesLoading 0.6s ease-out forwards;
 }
 
+.type-pokemon-img-open {
+	width: 2rem;
+	aspect-ratio: 1/1;
+	object-fit: cover;
+	object-position: center;
+}
+
 .type-pokemon-img:hover {
 	animation: rotationTypes 0.8s ease-out forwards;
 }
