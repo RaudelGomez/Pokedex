@@ -132,3 +132,21 @@ function mainInfoHTML(thePokemon) {
     </div>
   `;
 }
+
+function getPaginationHTML() {
+	let paginationContainer = document.getElementById("paginationContainer");
+	paginationContainer.innerHTML = "";
+	paginationContainer.innerHTML += /*html*/ `
+    <ul id="pagination" class="pagination">
+      <li id="link-previous-pokemon" class="page-item">
+        <a  class="page-link link-load-pokemons" onclick="beforePokemons()">Previous</a>
+      </li>
+      <ul id="pagination-buttons-container" class="pagination">
+        ${pagePaginationHTML()}
+      </ul>
+      <li id="link-next-pokemon" class="page-item">
+        <a class="page-link" href="#" onclick="nextPokemons()">Next</a>
+      </li>
+    </ul>
+  `;
+}
