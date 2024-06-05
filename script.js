@@ -48,9 +48,7 @@ async function loadingPokemons() {
 
 function LoadingOnePokemon(pokemonData, getPokemonColorPhoto) {
 	const pokemonList = document.getElementById("pokemonList");
-	pokemonList.innerHTML += /*html*/ `
-    ${LoadingOnePokemonHTML(pokemonData, getPokemonColorPhoto)}
-  `;
+	pokemonList.innerHTML += /*html*/ `${LoadingOnePokemonHTML(pokemonData, getPokemonColorPhoto)}`;
 }
 
 async function getPokemonData(url) {
@@ -75,14 +73,10 @@ function pokemonColor(pokemonData) {
 }
 
 function renderTypesPokemon(idContainer, getPokemonColorPhoto, pokemonData) {
-	const typesPokemonContainer = document.getElementById(
-		`types-pokemon${idContainer}`
-	);
+	const typesPokemonContainer = document.getElementById(`types-pokemon${idContainer}`);
 	for (let i = 0; i < getPokemonColorPhoto.length; i++) {
 		const type = getPokemonColorPhoto[i];
-		typesPokemonContainer.innerHTML += /*html*/ `
-      ${typesPokemonContainerHTML(pokemonData, type, i)}
-    `;
+		typesPokemonContainer.innerHTML += /*html*/ `${typesPokemonContainerHTML(pokemonData, type, i)}`;
 	}
 }
 
@@ -175,9 +169,7 @@ function renderTypesPokemonOpen(getPokemonColorPhoto) {
 	let typesPokemonContainerOpen = document.getElementById(`types-pokemon-open`);
 	for (let i = 0; i < getPokemonColorPhoto.length; i++) {
 		const type = getPokemonColorPhoto[i];
-		typesPokemonContainerOpen.innerHTML += /*html*/ `
-      ${typesPokemonContainerOpenHTML(type)}
-    `;
+		typesPokemonContainerOpen.innerHTML += /*html*/ `${typesPokemonContainerOpenHTML(type)}`;
 	}
 }
 
@@ -192,6 +184,7 @@ function savingCurrentColor(idPokemon) {
 		}
 	}
 }
+
 function closeImgOpen() {
 	let imgPopContainer = document.getElementById("img-pop-container");
 	imgPopContainer.classList.remove("img-pop-container");
@@ -273,10 +266,12 @@ async function infoEvo(thePokemon) {
 	let dataEvolution = await response.json();
 	let nameEvolution = dataEvolution?.evolves_from_species?.name;
 	let urlImg = "No evolutions before";
+	await ifNameEvolution (nameEvolution, urlImg)
+}
+
+async function ifNameEvolution (nameEvolution, urlImg){
 	if (nameEvolution) {
-		let nameFoundApi = await fetch(
-			`https://pokeapi.co/api/v2/pokemon/${nameEvolution}`
-		);
+		let nameFoundApi = await fetch(`https://pokeapi.co/api/v2/pokemon/${nameEvolution}`);
 		let nameFoundApiJON = await nameFoundApi.json();
 		urlImg = nameFoundApiJON.sprites.other.dream_world.front_default
 			? nameFoundApiJON.sprites.other.dream_world.front_default
@@ -286,9 +281,7 @@ async function infoEvo(thePokemon) {
 		<figcaption class="first-letter-uppercase mt-2 figNameEvolution">${nameEvolution}</figcaption>
 		`;
 	} else {
-		document.getElementById("info-evo").innerHTML = /*html*/ `
-		<p>${urlImg}</p>
-		`;
+		document.getElementById("info-evo").innerHTML = /*html*/ `<p>${urlImg}</p>`;
 	}
 }
 
@@ -351,6 +344,7 @@ async function showArrow(idPokemon) {
 		document.getElementById("arrow-right").classList.add("d-none");
 	}
 }
+
 /*Pagination */
 function getPagination() {
 	getPaginationHTML();
@@ -377,7 +371,6 @@ function nextPokemons() {
 		loadPokemonFrom = firstNumberPagination * lengthPokeArray - lengthPokeArray;
 		init();
 	}
-	console.log(currentPage);
 }
 
 function beforePokemons() {
@@ -386,7 +379,6 @@ function beforePokemons() {
 		loadPokemonFrom -= quantityPokemons;
 		init();
 	}
-	console.log(currentPage);
 }
 
 function showCurrentPokemons(currentNumber) {
