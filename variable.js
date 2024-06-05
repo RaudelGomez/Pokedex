@@ -11,6 +11,8 @@ let totalPage = 50;
 let showingNumberOfPage = 0;
 let currentPage = 1;
 let firstNumberPagination = 1;
+let loadingPokemonSearched = true;
+let loadingNextPoke = true;
 const typeColors = [
 	{ name: "water", color: "#3399FF", img: "./img/water.png" },
 	{ name: "fire", color: "#FF4422", img: "./img/fire.png" },

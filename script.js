@@ -1,5 +1,3 @@
-let loadingPokemonSearched = true;
-
 async function init() {
 	await getAllPokemons(loadPokemonFrom, quantityPokemons);
 	await loadingPokemons();
@@ -137,7 +135,6 @@ async function searchingNamePokemon() {
 
 async function loadingPokemonsSearched(resultsPokemons) {
 	document.getElementById("pokemonList").innerHTML = "";
-
 	for (let i = 0; i < 10; i++) {
 		const pokemon = resultsPokemons[i];
 		if (pokemon) {
@@ -207,9 +204,7 @@ function stopPropagation(event) {
 
 function infoPokemonOpen(thePokemon) {
 	let infoPokemonOpenContainer = document.getElementById("info-pokemon-open");
-	infoPokemonOpenContainer.innerHTML = /*html*/ `${infoPokemonOpenHTML(
-		thePokemon
-	)}`;
+	infoPokemonOpenContainer.innerHTML = /*html*/ `${infoPokemonOpenHTML(thePokemon)}`;
 	let rootElement = document.querySelector(":root");
 	rootElement.style.setProperty("--pokemon-color", colorImgOpen);
 	loadingAbilities(thePokemon);
@@ -230,9 +225,7 @@ function statsPoke(thePokemon) {
 	for (let i = 0; i < thePokemon.stats.length; i++) {
 		let stat = thePokemon.stats[i].base_stat;
 		const nameStat = thePokemon.stats[i].stat.name;
-		if (stat > 100) {
-			stat = 100;
-		}
+		if (stat > 100) {stat = 100;}
 		statCurrentPokemon.push(stat);
 		infoStats.innerHTML += /*html*/ `
 			<h6 id="nameStat${i}" class="text-start mb-0 name-stat">${nameStat}: ${stat}</h6>
@@ -254,10 +247,7 @@ function showInfo(idContainer) {
 		if (stat.parentNode.classList.contains("d-none")) {
 			stat.style.setProperty(`--progressBar-${idBarProgress}`, 0);
 		} else {
-			stat.style.setProperty(
-				`--progressBar-${idBarProgress}`,
-				`${statCurrentBar}%`
-			);
+			stat.style.setProperty(`--progressBar-${idBarProgress}`,`${statCurrentBar}%`);
 		}
 	}
 	showingContainersInfo(idContainer);
@@ -303,21 +293,29 @@ async function infoEvo(thePokemon) {
 }
 
 async function nextPokemon(idPokemon) {
-	let lastPokemonObject = namePokemons.length - 1;
-	let nameLastPokemon = allPokemonsAPI.results[lastPokemonObject].name;
-	let response = await fetch(`${BASE_URL}/${nameLastPokemon}`);
-	let pokemonFound = await response.json();
-	let idLastPokemon = pokemonFound.id;
-	if (idPokemon < idLastPokemon) {
-		let nextPokemonId = idPokemon + 1;
-		await openImgNext(nextPokemonId);
+	if (loadingNextPoke) {
+		loadingNextPoke = false;
+		let lastPokemonObject = namePokemons.length - 1;
+		let nameLastPokemon = allPokemonsAPI.results[lastPokemonObject].name;
+		let response = await fetch(`${BASE_URL}/${nameLastPokemon}`);
+		let pokemonFound = await response.json();
+		let idLastPokemon = pokemonFound.id;
+		if (idPokemon < idLastPokemon) {
+			let nextPokemonId = idPokemon + 1;
+			await openImgNext(nextPokemonId);
+		}
+		loadingNextPoke = true;
 	}
 }
 
 async function beforePokemon(idPokemon) {
-	if (idPokemon >= 2) {
-		let nextPokemonId = idPokemon + -1;
-		await openImgNext(nextPokemonId);
+	if (loadingNextPoke) {
+		loadingNextPoke = false;
+		if (idPokemon >= 2) {
+			let nextPokemonId = idPokemon + -1;
+			await openImgNext(nextPokemonId);
+		}
+		loadingNextPoke = true;
 	}
 }
 
@@ -332,10 +330,7 @@ async function openImgNext(idPokemon) {
 	}
 	let imgPopContainer = document.getElementById("img-pop-container");
 	imgPopContainer.classList.add("img-pop-container");
-	imgPopContainer.innerHTML = /*html*/ `${openImgHTML(
-		thePokemon,
-		getPokemonColorPhoto[0].color
-	)}`;
+	imgPopContainer.innerHTML = /*html*/ `${openImgHTML(thePokemon, getPokemonColorPhoto[0].color)}`;
 	await showArrow(idPokemon);
 	renderTypesPokemonOpen(getPokemonColorPhoto);
 	infoPokemonOpen(thePokemon);
