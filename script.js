@@ -290,6 +290,7 @@ async function nextPokemon(idPokemon) {
 		loadingNextPoke = false;
 		let lastPokemonObject = namePokemons.length - 1;
 		let nameLastPokemon = allPokemonsAPI.results[lastPokemonObject].name;
+		loading()
 		let response = await fetch(`${BASE_URL}/${nameLastPokemon}`);
 		let pokemonFound = await response.json();
 		let idLastPokemon = pokemonFound.id;
@@ -298,6 +299,7 @@ async function nextPokemon(idPokemon) {
 			await openImgNext(nextPokemonId);
 		}
 		loadingNextPoke = true;
+		disablebLoading()
 	}
 }
 
@@ -305,8 +307,10 @@ async function beforePokemon(idPokemon) {
 	if (loadingNextPoke) {
 		loadingNextPoke = false;
 		if (idPokemon >= 2) {
+			loading()
 			let nextPokemonId = idPokemon + -1;
 			await openImgNext(nextPokemonId);
+			disablebLoading()
 		}
 		loadingNextPoke = true;
 	}

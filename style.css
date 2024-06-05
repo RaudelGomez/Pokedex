@@ -1,7 +1,7 @@
 :root {
 	--main-color: #082129;
 	--secondary-color: #05171e;
-	--font-color: rgb(194, 185, 185);
+	--font-color: #c2b9b9;
 	--bg-info-card: #0d3240;
 	--pokemon-color: white;
 	--progressBar-0: 0%;
@@ -197,6 +197,11 @@ main {
 	to {
 		transform: rotate(360deg);
 	}
+}
+
+.ball-spinner{
+	position: relative;
+	z-index: 10000;
 }
 
 .spinner-animation {
