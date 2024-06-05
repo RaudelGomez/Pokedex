@@ -311,14 +311,14 @@ async function nextPokemon(idPokemon) {
 	let idLastPokemon = pokemonFound.id;
 	if (idPokemon < idLastPokemon) {
 		let nextPokemonId = idPokemon + 1;
-		openImgNext(nextPokemonId);
+		await openImgNext(nextPokemonId);
 	}
 }
 
 async function beforePokemon(idPokemon) {
 	if (idPokemon >= 2) {
 		let nextPokemonId = idPokemon + -1;
-		openImgNext(nextPokemonId);
+		await openImgNext(nextPokemonId);
 	}
 }
 
