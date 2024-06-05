@@ -1,3 +1,5 @@
+let loadingPokemonSearched = true;
+
 async function init() {
 	await getAllPokemons(loadPokemonFrom, quantityPokemons);
 	await loadingPokemons();
@@ -115,22 +117,27 @@ async function savingNamePokemonArray() {
 }
 
 async function searchingNamePokemon() {
-	namesFound = [];
-	let namePoke = document.getElementById("searchPokemon").value;
-	if (namePoke.length >= 3) {
+	let namePoke;
+	if (loadingPokemonSearched) {
+		loadingPokemonSearched = false;
 		namesFound = [];
-		namesFound = namePokemons.filter((name) => name.name.includes(namePoke));
-		if (namesFound.length >= 1) {
-			await loadingPokemonsSearched(namesFound);
+		namePoke = document.getElementById("searchPokemon").value;
+		if (namePoke.length >= 3) {
+			namesFound = [];
+			namesFound = namePokemons.filter((name) => name.name.includes(namePoke));
+			if (namesFound.length >= 1) {
+				await loadingPokemonsSearched(namesFound);
+			}
+		} else if (namePoke == "") {
+			loadingPokemons();
 		}
-	} else {
-		namesFound = [];
-		loadingPokemons();
+		loadingPokemonSearched = true;
 	}
 }
 
 async function loadingPokemonsSearched(resultsPokemons) {
 	document.getElementById("pokemonList").innerHTML = "";
+
 	for (let i = 0; i < 10; i++) {
 		const pokemon = resultsPokemons[i];
 		if (pokemon) {

@@ -1,6 +1,6 @@
 const BASE_URL = "https://pokeapi.co/api/v2/pokemon";
 let loadPokemonFrom = 0;
-let quantityPokemons = 9;
+let quantityPokemons = 10;
 let pokemonsAPI;
 let allPokemonsAPI;
 let namePokemons = [];
