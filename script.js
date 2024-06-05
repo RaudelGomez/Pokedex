@@ -6,6 +6,7 @@ let allPokemonsAPI;
 let namePokemons = [];
 let namesFound = [];
 let colorImgOpen = "";
+let statCurrentPokemon = [];
 const typeColors = [
 	{ name: "water", color: "#3399FF", img: "./img/water.png" },
 	{ name: "fire", color: "#FF4422", img: "./img/fire.png" },
@@ -252,25 +253,45 @@ function loadingAbilities(thePokemon) {
 
 function statsPoke(thePokemon) {
 	let infoStats = document.getElementById("info-stats");
+	statCurrentPokemon = [];
 	for (let i = 0; i < thePokemon.stats.length; i++) {
 		let stat = thePokemon.stats[i].base_stat;
 		const nameStat = thePokemon.stats[i].stat.name;
 		if (stat > 100) {
 			stat = 100;
 		}
+		statCurrentPokemon.push(stat);
 		infoStats.innerHTML += /*html*/ `
-			<p id="nameStat${i}" class="text-start mb-0 name-stat">${nameStat}: ${stat}</p>
-			<p id="stat${i}" class="bg-warning stat"></p>
+			<h6 id="nameStat${i}" class="text-start mb-0 name-stat">${nameStat}: ${stat}</h6>
+			<p id="stat${i}" class="bg-warning stat stat${i}"></p>
 		`;
-		document.getElementById(`stat${i}`).style.width = `${stat}%`;
+		document
+			.getElementById(`stat${i}`)
+			.style.setProperty(`--progressBar-${i}`, `${stat}%`);
 	}
 }
 
 function showInfo(idContainer) {
-	document.getElementById("info-stats").classList.add("d-none");
+	let infoStats = document.getElementById("info-stats");
+	let stats = infoStats.querySelectorAll("p");
+
+	infoStats.classList.add("d-none");
 	document.getElementById("info-main").classList.add("d-none");
 	document.getElementById("info-evo").classList.add("d-none");
 	document.getElementById(idContainer).classList.remove("d-none");
+
+	for (const stat of stats) {
+		let idBarProgress = stat.id.slice(-1);
+		let statCurrentBar = statCurrentPokemon[idBarProgress];
+		if (stat.parentNode.classList.contains("d-none")) {
+			stat.style.setProperty(`--progressBar-${idBarProgress}`, 0);
+		} else {
+			stat.style.setProperty(
+				`--progressBar-${idBarProgress}`,
+				`${statCurrentBar}%`
+			);
+		}
+	}
 
 	document.getElementById("menu-info-stats").classList.remove("active-info");
 	document.getElementById("menu-info-main").classList.remove("active-info");

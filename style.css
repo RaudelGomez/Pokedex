@@ -4,6 +4,12 @@
 	--font-color: rgb(194, 185, 185);
 	--bg-info-card: #0d3240;
 	--pokemon-color: white;
+	--progressBar-0: 0%;
+	--progressBar-1: 0%;
+	--progressBar-2: 0%;
+	--progressBar-3: 0%;
+	--progressBar-4: 0%;
+	--progressBar-5: 0%;
 }
 
 html {
@@ -270,6 +276,85 @@ footer {
 .stat {
 	height: 2px;
 	margin-bottom: 8px;
+}
+
+.stat0 {
+	width: var(--progressBar-0);
+	animation: barProgress0 1s ease-in-out;
+}
+.stat1 {
+	width: var(--progressBar-1);
+	animation: barProgress1 1.1s ease-in-out;
+}
+.stat2 {
+	width: var(--progressBar-2);
+	animation: barProgress2 1.2s ease-in-out;
+}
+.stat3 {
+	width: var(--progressBar-3);
+	animation: barProgress3 1.3s ease-in-out;
+}
+.stat4 {
+	width: var(--progressBar-4);
+	animation: barProgress4 1.4s ease-in-out;
+}
+.stat5 {
+	width: var(--progressBar-5);
+	animation: barProgress5 1.5s ease-in-out;
+}
+
+@keyframes barProgress0 {
+	from {
+		width: 0;
+	}
+	to {
+		width: var(--progressBar-0);
+	}
+}
+
+@keyframes barProgress1 {
+	from {
+		width: 0;
+	}
+	to {
+		width: var(--progressBar-1);
+	}
+}
+
+@keyframes barProgress2 {
+	from {
+		width: 0;
+	}
+	to {
+		width: var(--progressBar-2);
+	}
+}
+
+@keyframes barProgress3 {
+	from {
+		width: 0;
+	}
+	to {
+		width: var(--progressBar-3);
+	}
+}
+
+@keyframes barProgress4 {
+	from {
+		width: 0;
+	}
+	to {
+		width: var(--progressBar-4);
+	}
+}
+
+@keyframes barProgress5 {
+	from {
+		width: 0;
+	}
+	to {
+		width: var(--progressBar-5);
+	}
 }
 
 .name-stat {
