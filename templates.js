@@ -9,7 +9,7 @@ function LoadingOnePokemonHTML(pokemonData, getPokemonColorPhoto) {
         src="${
 					pokemonData.sprites.other.dream_world?.front_default
 						? pokemonData.sprites.other.dream_world?.front_default
-						: pokemonData.sprites?.front_default
+						: pokemonData.sprites.other["official-artwork"].front_default
 				}"
         class="card-img-top img-pokemon" alt="${pokemonData.name}" onclick="openImg('${pokemonData.id}')"
       />
@@ -43,7 +43,7 @@ function openImgHTML(pokemonData, color) {
         src="${
 					pokemonData.sprites.other.dream_world?.front_default
 						? pokemonData.sprites.other.dream_world?.front_default
-						: pokemonData.sprites?.front_default
+						: pokemonData.sprites.other["official-artwork"].front_default
 				}"
         class="card-img-top img-pokemon" alt="${pokemonData.name}"
       />
