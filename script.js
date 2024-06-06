@@ -149,9 +149,11 @@ async function openImg(idPokemon) {
 	savingCurrentColor(idPokemon);
 	let getPokemonColorPhoto;
 	try {
+		loading();
 		let response = await fetch(`${BASE_URL}/${idPokemon}`);
 		thePokemon = await response.json();
 		getPokemonColorPhoto = pokemonColor(thePokemon);
+		disablebLoading()
 	} catch (error) {
 		console.log(error);
 	}
@@ -266,7 +268,9 @@ async function infoEvo(thePokemon) {
 	let dataEvolution = await response.json();
 	let nameEvolution = dataEvolution?.evolves_from_species?.name;
 	let urlImg = "No evolutions before";
+	loading()
 	await ifNameEvolution (nameEvolution, urlImg)
+	disablebLoading()
 }
 
 async function ifNameEvolution (nameEvolution, urlImg){
