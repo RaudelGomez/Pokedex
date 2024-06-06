@@ -19,7 +19,7 @@
 				<img src="./img/pokemon.jpg" alt="Pokemon ball" />
 				<span>Pokedex</span>
 			</div>
-			<div>
+			<div class="d-flex search-container">
 				<input
 					type="search"
 					name="search"
@@ -28,6 +28,9 @@
 					onkeyup="searchingNamePokemon()"
 					onclick="deleteSearch()"
 				/>
+				<button class="btn btn-success search-button d-flex justify-content-center align-items-center" onclick="searchingNamePokemon()">
+					<span>Search</span>
+				</button>
 			</div>
 		</nav>
 		<main>

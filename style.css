@@ -59,6 +59,12 @@ main {
 	width: 220px;
 }
 
+.search-button{
+	height: 32px;
+	border-top-left-radius: unset !important;
+  border-bottom-left-radius: unset !important;
+}
+
 .pokemonId-card {
 	left: 8px;
 }
@@ -404,14 +410,29 @@ footer {
 	border-radius: unset !important;
 }
 
+@media (max-width: 530px) {
+	nav {
+		flex-direction: column;
+		gap: 16px;
+		align-items: center;
+	}
+}
+
 @media (max-width: 420px) {
 	html {
 		font-size: 0.7rem;
 	}
 
-	nav {
+		nav .search-container{
+		display: flex;
 		flex-direction: column;
-		gap: 16px;
+	}
+
+	.search-button{
+		height: 24px;
+		border-top-right-radius: unset !important;
+		border-bottom-right-radius: unset !important;
+		
 	}
 
 	.arrow-container {
