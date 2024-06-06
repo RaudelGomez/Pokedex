@@ -56,10 +56,11 @@ function openImgHTML(pokemonData, color) {
   `;
 }
 
-function typesPokemonContainerOpenHTML(type) {
+function typesPokemonContainerOpenHTML(type, idPokemon) {
 	return /*html*/ `
     <figure class="d-flex justify-content-center flex-column align-items-center mb-0">
-      <img class="type-pokemon-img-open" src="${type.img}" alt="${type.name}">  
+      <p id="noColor${idPokemon}${type.name}" class="d-none position-absolute help-color text-center rounded-1 p-1">You can not<br>change color here</p>
+      <img class="type-pokemon-img-open" src="${type.img}" alt="${type.name}" onmouseover="showingPopNoColor(${idPokemon}, '${type.name}')" onmouseout="hiddingPopNoColor(${idPokemon}, '${type.name}')">  
       <figcaption>${type.name}</figcaption>
     </figure>
     `;

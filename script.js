@@ -89,8 +89,10 @@ function displayNone(id, i) {
 }
 
 function displayBlock(id, i, numberTypes) {
-	if (numberTypes >= 2) {
-		document.getElementById(`helpColor${id}${i}`).classList.remove("d-none");
+	let helpColorElement = document.getElementById(`helpColor${id}${i}`);
+	helpColorElement.classList.remove("d-none");
+	if (numberTypes == 1) {
+		helpColorElement.innerHTML /*html*/= `That pokemon has <br> only one element`
 	}
 }
 
@@ -161,18 +163,26 @@ async function openImg(idPokemon) {
 	imgPopContainer.classList.add("img-pop-container");
 	imgPopContainer.innerHTML = /*html*/ `${openImgHTML(thePokemon)}`;
 	await showArrow(idPokemon);
-	renderTypesPokemonOpen(getPokemonColorPhoto);
+	renderTypesPokemonOpen(getPokemonColorPhoto, thePokemon);
 	infoPokemonOpen(thePokemon);
 	statsPoke(thePokemon);
 	await infoEvo(thePokemon);
 }
 
-function renderTypesPokemonOpen(getPokemonColorPhoto) {
+function renderTypesPokemonOpen(getPokemonColorPhoto, thePokemon) {
 	let typesPokemonContainerOpen = document.getElementById(`types-pokemon-open`);
 	for (let i = 0; i < getPokemonColorPhoto.length; i++) {
 		const type = getPokemonColorPhoto[i];
-		typesPokemonContainerOpen.innerHTML += /*html*/ `${typesPokemonContainerOpenHTML(type)}`;
+		typesPokemonContainerOpen.innerHTML += /*html*/ `${typesPokemonContainerOpenHTML(type, thePokemon.id)}`;
 	}
+}
+
+function showingPopNoColor(idPokemon, typeName) {
+	document.getElementById(`noColor${idPokemon}${typeName}`).classList.remove('d-none')
+}
+
+function hiddingPopNoColor(idPokemon, typeName) {
+	document.getElementById(`noColor${idPokemon}${typeName}`).classList.add('d-none')
 }
 
 function savingCurrentColor(idPokemon) {
