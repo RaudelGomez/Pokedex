@@ -305,6 +305,7 @@ async function nextPokemon(idPokemon) {
 		let lastPokemonObject = namePokemons.length - 1;
 		let nameLastPokemon = allPokemonsAPI.results[lastPokemonObject].name;
 		loading()
+		disabledArrow();
 		let response = await fetch(`${BASE_URL}/${nameLastPokemon}`);
 		let pokemonFound = await response.json();
 		let idLastPokemon = pokemonFound.id;
@@ -314,7 +315,18 @@ async function nextPokemon(idPokemon) {
 		}
 		loadingNextPoke = true;
 		disablebLoading()
+		enabledArrow();
 	}
+}
+
+function disabledArrow() {
+	document.getElementById('arrow-left').classList.add('disabled-click');
+	document.getElementById('arrow-right').classList.add('disabled-click');
+}
+
+function enabledArrow() {
+	document.getElementById('arrow-left').classList.remove('disabled-click');
+	document.getElementById('arrow-right').classList.remove('disabled-click');
 }
 
 async function beforePokemon(idPokemon) {
@@ -343,7 +355,7 @@ async function openImgNext(idPokemon) {
 	imgPopContainer.classList.add("img-pop-container");
 	imgPopContainer.innerHTML = /*html*/ `${openImgHTML(thePokemon, getPokemonColorPhoto[0].color)}`;
 	await showArrow(idPokemon);
-	renderTypesPokemonOpen(getPokemonColorPhoto);
+	renderTypesPokemonOpen(getPokemonColorPhoto, idPokemon);
 	infoPokemonOpen(thePokemon);
 	statsPoke(thePokemon);
 	await infoEvo(thePokemon);

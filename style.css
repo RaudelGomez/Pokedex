@@ -178,6 +178,10 @@ main {
 	animation: rotationTypes 0.8s ease-out forwards;
 }
 
+.disabled-click{
+	pointer-events: none;
+}
+
 @keyframes rotationTypesLoading {
 	from {
 		transform: rotateY(0);
